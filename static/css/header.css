@@ -1,0 +1,10 @@
+a{
+	cursor: pointer;
+	font-weight: lighter;
+	color: #333;
+}
+
+body{
+	min-width: 500px;
+	min-height: 800px;
+}
