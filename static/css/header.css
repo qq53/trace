@@ -1,5 +1,18 @@
+html, body{
+	height: 100%;
+}
+
 a{
 	cursor: pointer;
 	font-weight: lighter;
 	color: #333;
+}
+
+#header{
+	text-align: center;
+	font-size: 50px;
+	position: absolute;
+	width: 100%;
+	border-bottom: 1px solid #ccc;
+	box-shadow: 0 0 1px #aaa;
 }
