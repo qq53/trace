@@ -43,7 +43,7 @@ function uploadProgress(evt) {
 
 function uploadComplete(evt) {
     /* This event is raised when the server send back a response */
-    alert(evt.target.responseText);
+	$('#contents').html(evt.target.responseText)
 }
 
 function uploadFailed(evt) {

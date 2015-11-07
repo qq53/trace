@@ -1,0 +1,11 @@
+/* Write your styles */
+.body{
+	padding: 40px;
+	text-align: center;
+	background: url('../i/back.png') no-repeat;
+	min-height: 100%;
+}
+
+#contents{
+	margin-top: 10%;
+}
