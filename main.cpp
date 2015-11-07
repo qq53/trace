@@ -1,3 +1,13 @@
+/// \file main.cpp
+/*
+  ------------------------------------
+  Create date : 2015-11-07 23:24
+  Modified date: 2015-11-07 23:24
+  Author : Sen1993
+  Email : gsen1993@gmail.com
+  ------------------------------------
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
@@ -63,7 +73,7 @@ int main(int argc, char *argv[])
 					goto _n;
 				}
 				eax = ptrace(PTRACE_PEEKUSER, child, 4 * RAX, NULL);
-				syscall_trace[orig_rax]();
+				syscall_trace[orig_rax](orig_rax);
 			}
 _n:
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);

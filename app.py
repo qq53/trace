@@ -8,6 +8,9 @@ import codecs, time, json
 from urllib.parse import quote
 import os
 from jinja2 import Environment, FileSystemLoader
+from werkzeug.utils import secure_filename
+import sys
+from elf import elf
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -21,7 +24,11 @@ def home():
 		
 @app.route('/', methods=['POST'])
 def home_POST():
-	return request.files['fileToUpload'].filename
+	f = request.files['fileToUpload']
+	f.save('tmp')
+	#fname = secure_filename(f.filename)
+	
+	return elf('tmp')
 
 if __name__ == '__main__':
-    app.run(port=80)
+    app.run(port=80,host='0.0.0.0')

@@ -1,8 +1,20 @@
+/// \file call.cpp
+/*
+  ------------------------------------
+  Create date : 2015-11-07 23:25
+  Modified date: 2015-11-07 23:25
+  Author : Sen1993
+  Email : gsen1993@gmail.com
+  ------------------------------------
+*/
+
 #include "call.h"
 
-void empty(){} 
+void empty(int n){
+	printf("%d: %x\n", n, eax);
+}
 
-void call_open(){
+void call_open(int n){
 	printf("open = %x\n", eax);
 }
 
