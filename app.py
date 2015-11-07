@@ -14,7 +14,7 @@ from elf import elf
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
-env = Environment(loader = FileSystemLoader(cwd))
+env = Environment(loader = FileSystemLoader(cwd+'templates'))
 
 @app.route('/', methods=['GET'])
 def home():
@@ -28,7 +28,10 @@ def home_POST():
 	f.save('tmp')
 	#fname = secure_filename(f.filename)
 	
-	return elf('tmp')
+	template = env.get_template('inf.html')
+	inf = elf('tmp')
+	
+	return template.render(content=inf)
 
 if __name__ == '__main__':
     app.run(port=80,host='0.0.0.0')
