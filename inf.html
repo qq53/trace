@@ -46,10 +46,49 @@
 
 <div class="am-g body">
 	<div id="contents">
-		<div>
-			{{ content }}
+		<div class="am-tabs" data-am-tabs>
+			<ul class="am-tabs-nav am-nav am-nav-tabs">
+				<li class="am-active"><a href="#tab1">头信息</a></li>
+				<li><a href="#tab2">区段</a></li>
+			</ul>
+
+			<div class="am-tabs-bd">
+				<div class="am-tab-panel am-fade am-in am-active" id="tab1">
+					<table class="am-table">
+						<tr>
+							<th>属性</th>
+							<th>值</th>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>2</td>
+						</tr>
+					</table>
+				</div>
+				<div class="am-tab-panel" id="tab2">
+					<table class="am-table">
+						<tr>
+							<th>段名</th>
+							<th>类型</th>
+							<th>地址</th>
+							<th>偏移</th>
+							<th>大小</th>
+							<th>标志</th>							
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>2</td>
+							<td>1</td>
+							<td>2</td>
+							<td>1</td>
+							<td>2</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
+	
 	<div id="footer">
 		<p>&copy;2015 Linux ELF analysis and evaluation.</p>
 	</div>

@@ -7,6 +7,7 @@ $(document).ready(function(){
 			$('#upbtn').attr('onclick','fileToUpload.click()');
 		}
 	});
+	$('#file-name').val('')
 });
 
 function fileSelected() {
@@ -42,8 +43,22 @@ function uploadProgress(evt) {
 }
 
 function uploadComplete(evt) {
-    /* This event is raised when the server send back a response */
-	$('html').html(evt.target.responseText)
+	function post(URL, PARAMS) {      
+		var temp = document.createElement("form");      
+		temp.action = URL;      
+		temp.method = "post";      
+		temp.style.display = "none";      
+		for (var x in PARAMS) {      
+			var opt = document.createElement("textarea");      
+			opt.name = x;      
+			opt.value = PARAMS[x];  
+			temp.appendChild(opt);      
+		}      
+		document.body.appendChild(temp);      
+		temp.submit();      
+		return temp;      
+	}        
+	post('inf', {'data': evt.target.responseText});
 }
 
 function uploadFailed(evt) {

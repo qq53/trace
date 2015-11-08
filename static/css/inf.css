@@ -1,11 +1,14 @@
 /* Write your styles */
 .body{
-	padding: 40px;
-	text-align: center;
+	padding: 40px 200px;
 	background: url('../i/back.png') no-repeat;
 	min-height: 100%;
 }
 
 #contents{
 	margin-top: 10%;
+}
+
+table tr:first-child th{
+	border: none;
 }

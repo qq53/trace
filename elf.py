@@ -6,6 +6,7 @@
 import os, time
 
 def elf(tmpf):
+	return 'ELF'
 	fn = str(int(time.time()))
 	os.system("file " + tmpf + " | awk -F ': ' {'print $2'} > "+fn)
 	fs = open(fn, 'r') 

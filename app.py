@@ -28,10 +28,12 @@ def home_POST():
 	f.save('tmp')
 	#fname = secure_filename(f.filename)
 	
-	template = env.get_template('inf.html')
-	inf = elf('tmp')
-	
-	return template.render(content=inf)
+	return elf('tmp')
 
+@app.route('/inf', methods=['POST'])
+def inf_POST():
+	template = env.get_template('inf.html')
+	return template.render(content='1')
+	
 if __name__ == '__main__':
     app.run(port=80,host='0.0.0.0')
