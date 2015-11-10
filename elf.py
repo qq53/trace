@@ -75,14 +75,42 @@ def elf(tmpf):
 
 		header['ph'].append(dtemp)
 
-	return header
+	f.close()
+	f = open(tmpf, 'rb')
+	soff = int(header['shoff'],16)
+	data = f.read()[soff:]
+	header['sh'] = []
+	for i in range(int(header['shnum'],16)):
+		if header['class'] == '32':
+			#temp = f.read(struct.calcsize('10I'))
+			temp = struct.unpack('10I',data[i*64:i*64+64])
+		elif header['class'] == '64':
+			#temp = f.read(struct.calcsize('2I4Q2I2Q'))
+			temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+64])
+		dtemp = {}
+		dtemp['name'] = hex(temp[0])
+		dtemp['type'] = hex(temp[1])
+		dtemp['flags'] = hex(temp[2])
+		dtemp['addr'] = hex(temp[3])
+		dtemp['offset'] = hex(temp[4])
+		dtemp['size'] = hex(temp[5])
+		dtemp['link'] = hex(temp[6])
+		dtemp['info'] = hex(temp[7])
+		dtemp['addralign'] = hex(temp[8])
+		dtemp['entsize'] = hex(temp[9])
+
+		header['sh'].append(dtemp)
+
+	print(header['shnum'])
+
+	return header['sh']
 
 if __name__ == '__main__':
-	for k,v in elf('test').items():
-		if type(v) == type([]):
-			for dl in v:
-				for k1,v1 in dl.items():
-					print('\t',k1,':',v1)
-				print('\n')
-		else:
-			print(k,':',v)
+	#for k,v in elf('test').items():
+	#	if type(v) == type([]):
+	for dl in elf('test'):
+		for k1,v1 in dl.items():
+			print('\t',k1,':',v1)
+		print('\n')
+	#	else:
+	#		print(k,':',v)
