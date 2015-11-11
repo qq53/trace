@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # author: vap0r
 # github: github.com/qq53
 
@@ -9,6 +9,10 @@ def choose(d, i):
 		if v == i:
 			return k
 	return ''
+
+def get_cstr(s):
+	s = s.decode('ascii')
+	return s[:s.find('\x00')]
 
 def elf(tmpf):
 	f = open(tmpf, 'rb')
@@ -73,22 +77,31 @@ def elf(tmpf):
 		dtemp['flags'] = hex(temp[6])
 		dtemp['align'] = hex(temp[7])
 
-		header['ph'].append(dtemp)
+		#header['ph'].append(dtemp)
 
 	f.close()
 	f = open(tmpf, 'rb')
 	soff = int(header['shoff'],16)
-	data = f.read()[soff:]
+	d = f.read()
+	data = d[soff:]
+
+	i = int(header['shstrndx'],16)
+	if header['class'] == '32':
+		temp = struct.unpack('10I',data[i*64:i*64+64])
+	elif header['class'] == '64':
+		temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+64])
+	soff = temp[4]
+	size = temp[5]
+	tbl = d[soff:soff+size]
+
 	header['sh'] = []
 	for i in range(int(header['shnum'],16)):
 		if header['class'] == '32':
-			#temp = f.read(struct.calcsize('10I'))
 			temp = struct.unpack('10I',data[i*64:i*64+64])
 		elif header['class'] == '64':
-			#temp = f.read(struct.calcsize('2I4Q2I2Q'))
 			temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+64])
 		dtemp = {}
-		dtemp['name'] = hex(temp[0])
+		dtemp['name'] = get_cstr(tbl[temp[0]:])
 		dtemp['type'] = hex(temp[1])
 		dtemp['flags'] = hex(temp[2])
 		dtemp['addr'] = hex(temp[3])
@@ -101,16 +114,10 @@ def elf(tmpf):
 
 		header['sh'].append(dtemp)
 
-	print(header['shnum'])
-
 	return header['sh']
 
 if __name__ == '__main__':
-	#for k,v in elf('test').items():
-	#	if type(v) == type([]):
-	for dl in elf('test'):
-		for k1,v1 in dl.items():
-			print('\t',k1,':',v1)
-		print('\n')
-	#	else:
-	#		print(k,':',v)
+	for i in elf('test'):
+		for k,v in i.items():
+			print(k,':',v)
+		print('')
