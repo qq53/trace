@@ -1,7 +1,10 @@
 /* Write your styles */
+body{
+	background: url('../i/back.png');
+}
+
 .body{
 	padding: 40px 200px;
-	background: url('../i/back.png') no-repeat;
 	min-height: 100%;
 }
 
