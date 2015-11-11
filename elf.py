@@ -10,6 +10,13 @@ def choose(d, i):
 			return k
 	return ''
 
+def choose_bit(d, i):
+	result = ''
+	for k,v in d.items():
+		if v & i:
+			result += k
+	return result
+
 def get_cstr(s):
 	s = s.decode('ascii')
 	return s[:s.find('\x00')]
@@ -68,13 +75,39 @@ def elf(tmpf):
 			temp = f.read(struct.calcsize('2I6Q'))
 			temp = struct.unpack('2I6Q',temp)
 		dtemp = {}
-		dtemp['type'] = hex(temp[0])
-		dtemp['offset'] = hex(temp[1])
-		dtemp['vaddr'] = hex(temp[2])
-		dtemp['paddr'] = hex(temp[3])
-		dtemp['filesz'] = hex(temp[4])
-		dtemp['memsz'] = hex(temp[5])
-		dtemp['flags'] = hex(temp[6])
+
+		td = {
+			'NULL': 0,
+			'LOAD': 1,
+			'DYNAMIC': 2,
+			'INTERP': 3,
+			'NOTE': 4,
+			'SHLIB': 5,
+			'PHDR': 6,
+			'TLS': 7,
+			'NUM': 8,
+			'LOOS': 0x60000000,
+			'GNU_EH_FRAME': 0x6474e550,
+			'GNU_STACK': 0x6474e551,
+			'GNU_RELRO': 0x6474e552,
+			'SUNWBSS': 0x6ffffffa,
+			'SUNWSTACK': 0x6ffffffb
+		}
+		dtemp['type'] = choose(td, temp[0])
+
+		fd = {
+			'X': 1<<0,
+			'W': 1<<1,
+			'R': 1<<2,
+			'o': 0x0ff00000,
+			'p': 0xf0000000
+		}
+		dtemp['flags'] = choose_bit(fd,temp[1])[::-1]
+		dtemp['offset'] = hex(temp[2])
+		dtemp['vaddr'] = hex(temp[3])
+		dtemp['paddr'] = hex(temp[4])
+		dtemp['filesz'] = hex(temp[5])
+		dtemp['memsz'] = hex(temp[6])
 		dtemp['align'] = hex(temp[7])
 
 		header['ph'].append(dtemp)
@@ -102,8 +135,55 @@ def elf(tmpf):
 			temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+64])
 		dtemp = {}
 		dtemp['name'] = get_cstr(tbl[temp[0]:])
-		dtemp['type'] = hex(temp[1])
-		dtemp['flags'] = hex(temp[2])
+
+		td = {
+			'NULL': 0,
+			'PROGBITS': 1,
+			'SYMTAB': 2,
+			'STRTAB': 3,
+			'RELA': 4,
+			'HASH': 5,
+			'DYNAMIC': 6,
+			'NOTE': 7,
+			'NOBITS': 8,
+			'REL': 9,
+			'SHLIB': 10,
+			'DYNSYM': 11,
+			'INIT_ARRAY': 14,
+			'FINI_ARRAY': 15,
+			'PREINIT_ARRAY': 16,
+			'GROUP': 17,
+			'SYMTAB_SHNDX': 18,
+			'NUM': 19,
+			'LOOS': 0x60000000,
+			'GNU_ATTRIBUTES': 0x6ffffff5,
+			'GNU_HASH': 0x6ffffff6,
+			'GNU_LIBLIST': 0x6ffffff7,
+			'CHECKSUM': 0x6ffffff8,
+			'SUMW_move': 0x6ffffffa,
+			'SUNW_COMDAT': 0x6ffffffb,
+			'SUNW_syminfo': 0x6ffffffc,
+			'GNU_verdef': 0x6ffffffd,
+			'GNU_verneed': 0x6ffffffe,
+			'GNU_versym': 0x6fffffff,
+		}
+		dtemp['type'] = choose(td,temp[1])
+
+		fd = {
+			'W': 1<<0,
+			'A': 1<<1,
+			'X': 1<<2,
+			'M': 1<<4,
+			'S': 1<<5,
+			'I': 1<<6,
+			'L': 1<<7,
+			'O': 1<<8,
+			'G': 1<<9,
+			'T': 1<<10,
+			'o': 0x0ff00000,
+			'p': 0xf0000000,
+		}
+		dtemp['flags'] = choose_bit(fd,temp[2])[::-1]
 		dtemp['addr'] = hex(temp[3])
 		dtemp['offset'] = hex(temp[4])
 		dtemp['size'] = hex(temp[5])
@@ -116,5 +196,16 @@ def elf(tmpf):
 
 	return header
 
+def print_var(var):
+	t = type(var)
+	if t == type([]):
+		for i in var:
+			print_var(i)
+	elif t == type({}):
+		for k,v in var.items():
+			print(k,':',v)
+	else:
+		print(var)
+
 if __name__ == '__main__':
-	print(elf('test'))
+	print_var(elf('test'))
