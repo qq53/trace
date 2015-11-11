@@ -46,10 +46,64 @@
 
 <div class="am-g body">
 	<div id="contents">
-		<div>
-			{{ content }}
+		<div class="am-tabs" data-am-tabs>
+			<ul class="am-tabs-nav am-nav am-nav-tabs">
+				<li class="am-active"><a href="#tab1">头信息</a></li>
+				<li><a href="#tab2">区段</a></li>
+				<li><a href="#tab3">程序段</a></li>
+			</ul>
+
+			<div class="am-tabs-bd">
+				<div class="am-tab-panel am-fade am-in am-active" id="tab1">
+					<table class="am-table">
+						<tr>
+							<th>attr</th>
+							<th>value</th>
+						</tr>
+						<% for k,v in header.items() %>
+						<tr>
+							<td>{{ k }}</td>
+							<td>{{ v }}</td>
+						</tr>
+						<% endfor %>
+					</table>
+				</div>
+				<div class="am-tab-panel" id="tab2">
+					<table class="am-table">
+						<tr>
+							<th>attr</th>
+							<th>value</th>							
+						</tr>
+						<% for d in sections %>
+							<% for k,v in d.items() %>
+							<tr>
+								<td>{{ k }}</td>
+								<td>{{ v }}</td>
+							</tr>
+							<% endfor %>
+						<% endfor %>
+					</table>
+				</div>
+				<div class="am-tab-panel" id="tab3">
+					<table class="am-table">
+						<tr>
+							<th>attr</th>
+							<th>value</th>							
+						</tr>
+						<% for d in programs %>
+							<% for k,v in d.items() %>
+							<tr>
+								<td>{{ k }}</td>
+								<td>{{ v }}</td>
+							</tr>
+							<% endfor %>
+						<% endfor %>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
+	
 	<div id="footer">
 		<p>&copy;2015 Linux ELF analysis and evaluation.</p>
 	</div>
