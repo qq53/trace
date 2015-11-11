@@ -203,7 +203,8 @@ def print_var(var):
 			print_var(i)
 	elif t == type({}):
 		for k,v in var.items():
-			print(k,':',v)
+			print(k,':')
+			print_var(v)
 	else:
 		print(var)
 
