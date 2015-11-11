@@ -77,7 +77,7 @@ def elf(tmpf):
 		dtemp['flags'] = hex(temp[6])
 		dtemp['align'] = hex(temp[7])
 
-		#header['ph'].append(dtemp)
+		header['ph'].append(dtemp)
 
 	f.close()
 	f = open(tmpf, 'rb')
@@ -114,10 +114,7 @@ def elf(tmpf):
 
 		header['sh'].append(dtemp)
 
-	return header['sh']
+	return header
 
 if __name__ == '__main__':
-	for i in elf('test'):
-		for k,v in i.items():
-			print(k,':',v)
-		print('')
+	print(elf('test'))

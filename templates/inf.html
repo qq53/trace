@@ -60,12 +60,12 @@
 							<th>attr</th>
 							<th>value</th>
 						</tr>
-						<% for k,v in header.items() %>
+						{% for k,v in header.items() %}
 						<tr>
 							<td>{{ k }}</td>
 							<td>{{ v }}</td>
 						</tr>
-						<% endfor %>
+						{% endfor %}
 					</table>
 				</div>
 				<div class="am-tab-panel" id="tab2">
@@ -74,14 +74,14 @@
 							<th>attr</th>
 							<th>value</th>							
 						</tr>
-						<% for d in sections %>
-							<% for k,v in d.items() %>
+						{% for d in sections %}
+							{% for k,v in d.items() %}
 							<tr>
 								<td>{{ k }}</td>
 								<td>{{ v }}</td>
 							</tr>
-							<% endfor %>
-						<% endfor %>
+							{% endfor %}
+						{% endfor %}
 					</table>
 				</div>
 				<div class="am-tab-panel" id="tab3">
@@ -90,20 +90,19 @@
 							<th>attr</th>
 							<th>value</th>							
 						</tr>
-						<% for d in programs %>
-							<% for k,v in d.items() %>
+						{% for d in programs %}
+							{% for k,v in d.items() %}
 							<tr>
 								<td>{{ k }}</td>
 								<td>{{ v }}</td>
 							</tr>
-							<% endfor %>
-						<% endfor %>
+							{% endfor %}
+						{% endfor %}
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 	<div id="footer">
 		<p>&copy;2015 Linux ELF analysis and evaluation.</p>
 	</div>
