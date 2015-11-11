@@ -71,40 +71,64 @@
 				<div class="am-tab-panel" id="tab2">
 					<table class="am-table">
 						<tr>
-							<th>attr</th>
-							<th>value</th>							
+							<th>name</th>
+							<th>type</th>	
+							<th>flags</th>
+							<th>addr</th>
+							<th>offset</th>
+							<th>size</th>
+							<th>link</th>
+							<th>info</th>
+							<th>addralign</th>
+							<th>entsize</th>
 						</tr>
 						{% for d in sections %}
-							{% for k,v in d.items() %}
-							<tr>
-								<td>{{ k }}</td>
-								<td>{{ v }}</td>
-							</tr>
-							{% endfor %}
+						<tr>
+							<td>{{ d.name }}</td>
+							<td>{{ d.type }}</td>
+							<td>{{ d.flags }}</td>
+							<td>{{ d.addr }}</td>
+							<td>{{ d.offset }}</td>
+							<td>{{ d.size }}</td>
+							<td>{{ d.link }}</td>
+							<td>{{ d.info }}</td>
+							<td>{{ d.addralign }}</td>
+							<td>{{ d.entsize }}</td>
+						</tr>
 						{% endfor %}
 					</table>
 				</div>
 				<div class="am-tab-panel" id="tab3">
 					<table class="am-table">
 						<tr>
-							<th>attr</th>
-							<th>value</th>							
+							<th>type</th>
+							<th>offset</th>	
+							<th>vaddr</th>
+							<th>paddr</th>	
+							<th>filesz</th>
+							<th>memsz</th>	
+							<th>flgas</th>
+							<th>align</th>								
 						</tr>
 						{% for d in programs %}
-							{% for k,v in d.items() %}
-							<tr>
-								<td>{{ k }}</td>
-								<td>{{ v }}</td>
-							</tr>
-							{% endfor %}
+						<tr>
+							<td>{{ d.type }}</td>
+							<td>{{ d.offset }}</td>
+							<td>{{ d.vaddr }}</td>
+							<td>{{ d.paddr }}</td>
+							<td>{{ d.filesz }}</td>
+							<td>{{ d.memsz }}</td>
+							<td>{{ d.flgas }}</td>
+							<td>{{ d.align }}</td>
+						</tr>
 						{% endfor %}
 					</table>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div id="footer">
-		<p>&copy;2015 Linux ELF analysis and evaluation.</p>
+		<div id="footer">
+			<p>&copy;2015 Linux ELF analysis and evaluation.</p>
+		</div>
 	</div>
 </div>
 
