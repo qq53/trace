@@ -5,6 +5,7 @@ $(document).ready(function(){
 			$('#upbtn').text('选择样本');
 			$('#upbtn').attr('class','am-btn am-btn-default');
 			$('#upbtn').attr('onclick','fileToUpload.click()');
+			$('#fileToUpload').val('');
 		}
 	});
 	$('#file-name').val('')
