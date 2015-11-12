@@ -1,18 +1,7 @@
-/// \file main.cpp
-/*
-  ------------------------------------
-  Create date : 2015-11-07 23:24
-  Modified date: 2015-11-07 23:24
-  Author : Sen1993
-  Email : gsen1993@gmail.com
-  ------------------------------------
-*/
-
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <inttypes.h>
 #include <sys/ptrace.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <sys/reg.h>

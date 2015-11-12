@@ -15,3 +15,7 @@ body{
 table tr:first-child th{
 	border: none;
 }
+
+.am-tabs-bd{
+	background: white;
+}
