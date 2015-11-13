@@ -35,11 +35,13 @@ int main(int argc, char *argv[])
     child = fork();
     if (child == 0) {
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-		if(argc == 2)
+		if(argc <= 3)
 			args = NULL;
 		else
-			args = &argv[2];
-		execve(argv[1], args, NULL);
+			args = &argv[3];
+		if(!strcmp(argv[1],"64"))
+			IS64BITS = true;
+		execve(argv[2], args, NULL);
     } else {
 		while (1) {
 			wait(&status);

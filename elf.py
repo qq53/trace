@@ -3,6 +3,7 @@
 # github: github.com/qq53
 
 import struct
+import os
 
 def choose(d, i):
 	for k,v in d.items():
@@ -210,3 +211,4 @@ def print_var(var):
 
 if __name__ == '__main__':
 	print_var(elf('test'))
+	os.system('./a.out 32 test')
