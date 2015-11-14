@@ -1,4 +1,3 @@
 pid_t child;
 struct user_regs_struct regs;
-uint32_t eax;
-bool IS64BITS = false;
+uint64_t eax;

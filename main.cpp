@@ -35,13 +35,11 @@ int main(int argc, char *argv[])
     child = fork();
     if (child == 0) {
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-		if(argc <= 3)
+		if(argc <= 2)
 			args = NULL;
 		else
-			args = &argv[3];
-		if(!strcmp(argv[1],"64"))
-			IS64BITS = true;
-		execve(argv[2], args, NULL);
+			args = &argv[2];
+		execve(argv[1], args, NULL);
     } else {
 		while (1) {
 			wait(&status);
@@ -63,7 +61,7 @@ int main(int argc, char *argv[])
 					pass = false;
 					goto _n;
 				}
-				eax = ptrace(PTRACE_PEEKUSER, child, 4 * RAX, NULL);
+				eax = ptrace(PTRACE_PEEKUSER, child, 8 * RAX, NULL);
 				syscall_trace[orig_rax](orig_rax);
 			}
 _n:
