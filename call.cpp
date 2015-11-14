@@ -1,11 +1,11 @@
 #include "call.h"
 
 void empty(int n){
-	printf("%s = %x\n", syscall_name[n], eax);
+	printf("%s = %d\n", syscall_name[n], regs.eax);
 }
 
 void call_open(int n){
-	printf("open = %x\n", eax);
+	printf("open = %x\n", regs.eax);
 }
 
 void init_call(){

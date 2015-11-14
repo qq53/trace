@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
     int status;
     int insyscall = 0;
 	int count = 0;
-	bool pass = false;
 	char **args;
+	int count_key = 25;
 
 	if(argc < 2){
 		printf("Usage trace xx\n");
@@ -32,36 +32,31 @@ int main(int argc, char *argv[])
 
 	init_call();
 
+	count_key += atoi(argv[1]);
+
     child = fork();
     if (child == 0) {
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-		if(argc <= 2)
+		if(argc <= 3)
 			args = NULL;
 		else
-			args = &argv[2];
-		execve(argv[1], args, NULL);
+			args = &argv[3];
+		execve(argv[2], args, NULL);
     } else {
 		while (1) {
 			wait(&status);
 			if (WIFEXITED(status))
 				break;
-			orig_rax = ptrace(PTRACE_PEEKUSER, child, 8 * ORIG_RAX, NULL);
+			orig_rax = ptrace(PTRACE_PEEKUSER, child, 4 * ORIG_EAX, NULL);
 			if (insyscall == 0) {
 				insyscall = 1;
 				ptrace(PTRACE_GETREGS, child, NULL, &regs);
-				if(count++ < 25)
+				if(count++ < count_key)
 					goto _n;
-				if(regs.rbp - regs.rsp > STACK_SIZE)
-					pass = true;
 			} else {
 				insyscall = 0;
-				if(count <= 25)
+				if(count <= count_key)
 					goto _n;
-				if(pass){
-					pass = false;
-					goto _n;
-				}
-				eax = ptrace(PTRACE_PEEKUSER, child, 8 * RAX, NULL);
 				syscall_trace[orig_rax](orig_rax);
 			}
 _n:
