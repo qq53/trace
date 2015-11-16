@@ -1,4 +1,4 @@
-typedef void (*fn)(int);
-fn syscall_trace[316] = {NULL};
+typedef void(*fn)(int);
+fn syscall_trace[354] = {NULL};
 
 void init_call();

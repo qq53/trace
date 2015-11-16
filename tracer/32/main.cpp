@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     int insyscall = 0;
 	int count = 0;
 	char **args;
-	int count_key = 25;
+	int count_key = 26;
 
 	if(argc < 2){
 		printf("Usage trace xx\n");
