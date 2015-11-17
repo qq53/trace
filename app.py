@@ -33,10 +33,12 @@ def home_POST():
 	template = env.get_template('inf.html')
 	ss = result['sh']
 	ps = result['ph']
+	pss = result['pss']
 	result.pop('sh')
 	result.pop('ph')
+	result.pop('pss')
 
-	return template.render(header=result,sections=ss,programs=ps)
+	return template.render(header=result,sections=ss,programs=ps,process=pss)
 
 @app.route('/inf', methods=['POST'])
 def inf_POST():

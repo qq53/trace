@@ -121,9 +121,11 @@ def elf(tmpf):
 
 	i = int(header['shstrndx'],16)
 	if header['class'] == '32':
-		temp = struct.unpack('10I',data[i*64:i*64+64])
+		l = struct.calcsize('10I')
+		temp = struct.unpack('10I',data[i*64:i*64+l])
 	elif header['class'] == '64':
-		temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+64])
+		l = struct.calcsize('2I4Q2I2Q')
+		temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+l])
 	soff = temp[4]
 	size = temp[5]
 	tbl = d[soff:soff+size]
@@ -131,9 +133,11 @@ def elf(tmpf):
 	header['sh'] = []
 	for i in range(int(header['shnum'],16)):
 		if header['class'] == '32':
-			temp = struct.unpack('10I',data[i*64:i*64+64])
+			l = struct.calcsize('10I')
+			temp = struct.unpack('10I',data[i*64:i*64+l])
 		elif header['class'] == '64':
-			temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+64])
+			l = struct.calcsize('2I4Q2I2Q')
+			temp = struct.unpack('2I4Q2I2Q',data[i*64:i*64+l])
 		dtemp = {}
 		dtemp['name'] = get_cstr(tbl[temp[0]:])
 
@@ -195,6 +199,13 @@ def elf(tmpf):
 
 		header['sh'].append(dtemp)
 
+		of = open('ptmp','rt')
+		if header['class'] == '32':
+			os.system('tracer/tracer32 ' + tmpf)
+		else:
+			os.system('tracer/tracer64 ' + tmpf)
+		header['pss'] = of.read()
+
 	return header
 
 def print_var(var):
@@ -210,5 +221,4 @@ def print_var(var):
 		print(var)
 
 if __name__ == '__main__':
-	print_var(elf('test'))
-	os.system('./a.out 32 test')
+	print_var(elf('./tracer/test32'))
