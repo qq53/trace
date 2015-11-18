@@ -1,11 +1,18 @@
 #include "call.h"
+#include <fcntl.h>
+
+char buf[64];
 
 void empty(int n){
-	printf("%s = %d\n", syscall_name[n], eax);
+	memset(buf, 0, sizeof(buf));
+	sprintf(buf, "%s = %d\n", syscall_name[n], eax);
+	write(fd, buf, sizeof(buf));
 }
 
 void call_open(int n){
-	printf("open %x = %x\n", regs.rdi, eax);
+	memset(buf, 0, sizeof(buf));
+	sprintf(buf, "open %x = %x\n", regs.rdi, eax);
+	write(fd, buf, sizeof(buf));
 }
 
 void init_call(){
@@ -15,6 +22,8 @@ void init_call(){
 	
 	//special call
 	syscall_trace[OPEN] = &call_open;
+
+	fd = open("ptmp", O_WRONLY | O_CREAT, 0744);
 }
 
 char *checkStr(uint64_t addr, int m = 1000){

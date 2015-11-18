@@ -62,5 +62,7 @@ _n:
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 		}
     }
+
+	close(fd);
     return 0;
 }
