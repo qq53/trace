@@ -51,6 +51,7 @@
 				<li class="am-active"><a href="#tab1">头信息</a></li>
 				<li><a href="#tab2">区段</a></li>
 				<li><a href="#tab3">程序段</a></li>
+				<li><a href="#tab4">调用跟踪</a></li>
 			</ul>
 
 			<div class="am-tabs-bd">
@@ -123,6 +124,13 @@
 						</tr>
 						{% endfor %}
 					</table>
+				</div>
+				<div class="am-tab-panel" id="tab4">
+					<ul>
+					{% for i in pss %}
+						<li>{{ i }}</li>
+					{% endfor %}
+					</ul>
 				</div>
 			</div>
 		</div>
