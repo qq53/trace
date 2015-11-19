@@ -40,9 +40,7 @@
 
 <!--在这里编写你的代码-->
 
-<div id="header">
-	<a href="/">Linux ELF analysis and evaluation</a>
-</div>
+{% include "header.html" %}
 
 <div class="am-g body">
 	<div id="contents">
@@ -127,7 +125,7 @@
 				</div>
 				<div class="am-tab-panel" id="tab4">
 					<ul>
-					{% for i in pss %}
+					{% for i in process %}
 						<li>{{ i }}</li>
 					{% endfor %}
 					</ul>
@@ -137,9 +135,7 @@
 	</div>
 </div>
 
-<div id="footer">
-	<p>&copy;2015 Linux ELF analysis and evaluation.</p>
-</div>
+{% include "footer.html" %}
 
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="static/js/jquery.min.js"></script>

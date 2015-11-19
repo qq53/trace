@@ -8,6 +8,7 @@
 #include <sys/syscall.h>
 #include <sys/user.h>
 #include <string.h>
+#include <fcntl.h>
 
 #include "main.h"
 #include "call_name.h"
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
 			args = NULL;
 		else
 			args = &argv[2];
+		close(1);
 		execve(argv[1], args, NULL);
     } else {
 		while (1) {
@@ -62,7 +64,5 @@ _n:
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 		}
     }
-
-	close(fd);
     return 0;
 }

@@ -4,6 +4,7 @@
 
 import struct
 import os
+from subprocess import Popen, PIPE
 
 def choose(d, i):
 	for k,v in d.items():
@@ -200,15 +201,12 @@ def elf(tmpf):
 		header['sh'].append(dtemp)
 
 	if header['class'] == '32':
-		os.system('tracer/tracer32 ' + tmpf)
+		d = os.popen('./tracer/tracer32 ' + tmpf).readlines()
 	else:
-		os.system('tracer/tracer64 ' + tmpf)
-	of = open('ptmp','rt')
-	header['pss'] = of.read()
-	of.close()
-	os.remove('ptmp')
+		d = os.popen('./tracer/tracer64 ' + tmpf).readlines()
+	header['pss'] = d
 
-	return header['pss']
+	return header
 
 def print_var(var):
 	t = type(var)
@@ -223,4 +221,4 @@ def print_var(var):
 		print(var)
 
 if __name__ == '__main__':
-	print_var(elf('./tracer/test32'))
+	print_var(elf('tracer/test32'))

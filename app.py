@@ -11,6 +11,7 @@ from jinja2 import Environment, FileSystemLoader
 from werkzeug.utils import secure_filename
 import sys
 from elf import elf
+import stat
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -26,6 +27,7 @@ def home():
 def home_POST():
 	f = request.files['fileToUpload']
 	f.save('tmp')
+	os.chmod('tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 	#fname = secure_filename(f.filename)
 	
 	result = elf('tmp')
@@ -37,7 +39,6 @@ def home_POST():
 	result.pop('sh')
 	result.pop('ph')
 	result.pop('pss')
-
 	return template.render(header=result,sections=ss,programs=ps,process=pss)
 
 @app.route('/inf', methods=['POST'])
@@ -45,4 +46,4 @@ def inf_POST():
 	return request.form['data']
 	
 if __name__ == '__main__':
-    app.run(port=80,host='0.0.0.0')
+	app.run(port=80,host='0.0.0.0')
