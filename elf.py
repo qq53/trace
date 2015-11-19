@@ -4,7 +4,6 @@
 
 import struct
 import os
-from subprocess import Popen, PIPE
 
 def choose(d, i):
 	for k,v in d.items():
