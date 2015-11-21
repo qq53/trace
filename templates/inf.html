@@ -124,11 +124,15 @@
 					</table>
 				</div>
 				<div class="am-tab-panel" id="tab4">
-					<ul>
+					<ul class="times">
 					{% for i in process %}
-						<li>{{ i }}</li>
+						<li>
+							<div class="icon"></div>
+							<div class="text">{{  i  }}</div>
+						</li>	
 					{% endfor %}
 					</ul>
+				</div>
 				</div>
 			</div>
 		</div>

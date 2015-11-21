@@ -19,3 +19,76 @@ table tr:first-child th{
 .am-tabs-bd{
 	background: white;
 }
+
+.times {
+	margin: 30px 0 0 0;
+	list-style: none;
+	position: relative;
+}
+
+.times:before{
+	content: '';
+	position: absolute;
+	top: 10px;
+	bottom: 0;
+	width: 7px;
+	background: #afdcf8;
+	left: 50%;
+	margin-left: -10px;
+}
+
+.times > li{
+	position: relative;
+}
+
+.times > li:nth-child(even) > .text{
+	margin-left: 7% !important;
+	text-align: right;
+}
+
+.times > li  > .text{
+	margin: 0 0 30px 52%;
+	background: #3594cb;
+	color: #fff;
+	padding: 10px;
+	font-size: 1.2em;
+	font-weight: 300;
+	line-height: 1.4;
+	position: relative;
+	border-radius: 5px;
+	width: 300px;
+}
+
+.times > li > .text:after{
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-width: 10px;
+	top: 10px;
+}
+
+.times > li:nth-child(odd) > .text:after{
+	right: 100%;
+	border-right-color: #3594cb;
+}
+
+.times > li:nth-child(even) > .text:after{
+	left: 100%;
+	border-left-color: #3594cb;
+}
+
+.times > li  > .icon{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	background: #fff;
+	border-radius: 50%;
+	box-shadow: 0 0 0 6px #afdcf8;
+	text-align: center;
+	left: 50%;
+	top: 0;
+	margin: 10px 0 0 -33px;
+}
