@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 import sys
 from elf import elf
 import stat
+import MySQLdb
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -28,7 +29,6 @@ def home_POST():
 	f = request.files['fileToUpload']
 	f.save('tmp')
 	os.chmod('tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-	#fname = secure_filename(f.filename)
 	
 	result = elf('tmp')
 	os.remove('tmp')
