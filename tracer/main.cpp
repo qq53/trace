@@ -11,8 +11,14 @@
 #include <fcntl.h>
 
 #include "main.h"
-#include "call_name.h"
-#include "call_num.h"
+#include "pre.h"
+#ifdef BIT32
+	#include "call_name_32.h"
+	#include "call_num_32.h"
+#else
+	#include "call_name_64.h"
+	#include "call_num_64.h"
+#endif
 #include "call.cpp"
 
 #define STACK_SIZE 0x8000
@@ -24,7 +30,11 @@ int main(int argc, char *argv[])
     int insyscall = 0;
 	int count = 0;
 	char **args;
+#ifdef BIT32
 	int count_key = 26;
+#else
+	int count_key = 27;
+#endif
 
 	if(argc < 2){
 		printf("Usage trace xx\n");
@@ -47,12 +57,20 @@ int main(int argc, char *argv[])
 			wait(&status);
 			if (WIFEXITED(status))
 				break;
+#ifdef BIT32
 			orig_rax = ptrace(PTRACE_PEEKUSER, child, 4 * ORIG_EAX, NULL);
+#else
+			orig_rax = ptrace(PTRACE_PEEKUSER, child, 8 * ORIG_RAX, NULL);
+#endif
 			if (insyscall == 0) {
 				insyscall = 1;
+#ifdef BIT32
+				eax = ptrace(PTRACE_PEEKUSER, child, 4 * EAX, NULL);
+#else
+				eax = ptrace(PTRACE_PEEKUSER, child, 8 * RAX, NULL);
+#endif	
 				if(count++ < count_key)
 					goto _n;
-				eax = ptrace(PTRACE_PEEKUSER, child, 4 * EAX, NULL);
 			} else {
 				insyscall = 0;
 				if(count <= count_key)

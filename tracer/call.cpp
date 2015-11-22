@@ -5,12 +5,16 @@ void empty(int n){
 }
 
 void call_open(int n){
+#ifdef BIT32
 	printf("open %x = %x\n", regs.ebx, eax);
+#else
+	printf("open %x = %x\n", regs.rdi, eax);
+#endif
 }
 
 void init_call(){
 	//initilize
-	for(int i = 0; i < sizeof(syscall_trace)/sizeof(syscall_trace[0]); ++i)
+	for(int i = 0; i < CALL_NUMS; ++i)
 		syscall_trace[i] = &empty;
 	
 	//special call
