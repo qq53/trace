@@ -131,6 +131,10 @@ def elf(tmpf):
 	tbl = d[soff:soff+size]
 
 	header['sh'] = []
+
+	
+	rodata_addr = ''
+	rodata_size = ''
 	for i in range(int(header['shnum'],16)):
 		if header['class'] == '32':
 			l = struct.calcsize('10I')
@@ -140,7 +144,6 @@ def elf(tmpf):
 			temp = struct.unpack('2I4Q2I2Q',data[i*l:i*l+l])
 		dtemp = {}
 		dtemp['name'] = get_cstr(tbl[temp[0]:])
-
 		td = {
 			'NULL': 0,
 			'PROGBITS': 1,
@@ -196,13 +199,16 @@ def elf(tmpf):
 		dtemp['info'] = hex(temp[7])
 		dtemp['addralign'] = hex(temp[8])
 		dtemp['entsize'] = hex(temp[9])
+		if dtemp['name'] == '.rodata':
+			rodata_addr = str(int(dtemp['addr'],16))
+			rodata_size = str(int(dtemp['size'],16))
 
 		header['sh'].append(dtemp)
 
 	if header['class'] == '32':
-		d = os.popen('./tracer/tracer32 ' + tmpf).readlines()
+		d = os.popen('./tracer/tracer32 ' + tmpf + ' ' + rodata_addr + ' ' + rodata_size).readlines()
 	else:
-		d = os.popen('./tracer/tracer64 ' + tmpf).readlines()
+		d = os.popen('./tracer/tracer64 ' + tmpf + ' ' + rodata_addr + ' ' + rodata_size).readlines()
 	header['pss'] = d
 
 	return header

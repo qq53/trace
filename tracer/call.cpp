@@ -9,15 +9,22 @@ void call_open(int n){
 }
 
 void init_call(){
-	//initilize
 	for(int i = 0; i < CALL_NUMS; ++i)
 		syscall_trace[i] = &empty;
 	
-	//special call
 	syscall_trace[OPEN] = &call_open;
 }
 
-char *checkStr(BITS_TYPE addr, int m = 1000){
+char *check_str(BITS_TYPE addr){
+	if( regs.REG_SP <= addr && regs.REG_BP >= addr )
+		return get_str(addr);
+	else if( rodata_addr_start <= addr && rodata_addr_end > addr)
+		return get_str(addr, rodata_size);
+	else
+		return NULL;
+}
+
+char *get_str(BITS_TYPE addr, int m){
 	int max_len = m;
 	char *str = (char *)malloc(max_len); 
 	char *p = str;

@@ -24,20 +24,24 @@ int main(int argc, char *argv[])
 	int count = 0;
 	char **args;
 
-	if(argc < 2){
-		printf("Usage trace xx\n");
+	if(argc < 4){
+		printf("Usage: tracer xx rodata_addr rodata_size\n");
 		return 0;
 	}
+
+	rodata_addr_start = atoi(argv[2]);
+	rodata_size = atoi(argv[3]);
+	rodata_addr_end = rodata_size + rodata_addr_start;
 
 	init_call();
 
     child = fork();
     if (child == 0) {
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-		if(argc <= 2)
+		if(argc <= 4)
 			args = NULL;
 		else
-			args = &argv[2];
+			args = &argv[4];
 		close(1);
 		execve(argv[1], args, NULL);
     } else {
