@@ -5,11 +5,7 @@ void empty(int n){
 }
 
 void call_open(int n){
-#ifdef BIT32
-	printf("open %x = %x\n", regs.ebx, eax);
-#else
-	printf("open %x = %x\n", regs.rdi, eax);
-#endif
+	printf("open %x = %x\n", regs.ARG1, eax);
 }
 
 void init_call(){
