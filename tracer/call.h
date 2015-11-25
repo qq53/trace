@@ -1,4 +1,4 @@
-typedef void (*fn)(int);
+#define MAX_STRLEN 100
 
 #ifdef BIT32
 	#define CALL_NUMS 354
@@ -22,9 +22,12 @@ typedef void (*fn)(int);
 	#define REG_SP	  rsp
 	#define REG_BP	  rbp
 #endif
+
+typedef void (*fn)(int);
+
 fn syscall_trace[CALL_NUMS] = {NULL};
 
 void init_call();
 long rodata_addr_start, rodata_addr_end, rodata_size;
 char *check_str(BITS_TYPE addr);
-char *get_str(BITS_TYPE addr,int size = 100);
+char *get_str(BITS_TYPE addr,int size = MAX_STRLEN);
