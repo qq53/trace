@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
     long call_num;
     int status;
     int insyscall = 0;
-	int count = 0;
 	char **args;
 
 	if(argc < 4){
@@ -52,17 +51,12 @@ int main(int argc, char *argv[])
 			call_num = ptrace(PTRACE_PEEKUSER, child, BYTES * ORIG_REG0, NULL);
 			if (insyscall == 0) {
 				insyscall = 1;
-				if (++count < SKIP_CALLS_NUM)
-					goto _skip_call;
 				reg0 = ptrace(PTRACE_PEEKUSER, child, BYTES * REG0, NULL);
 			} else {
 				insyscall = 0;
-				if (count <= SKIP_CALLS_NUM)
-					goto _skip_call;
 				ptrace(PTRACE_GETREGS, child, NULL, &regs);
 				syscall_trace[call_num](call_num);
 			}
-_skip_call:
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 		}
     }
