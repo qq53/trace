@@ -132,7 +132,6 @@ def elf(tmpf):
 
 	header['sh'] = []
 
-	
 	rodata_addr = ''
 	rodata_size = ''
 	for i in range(int(header['shnum'],16)):

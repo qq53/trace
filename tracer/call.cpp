@@ -1,7 +1,7 @@
 #include "call.h"
 
 void empty(int n){
-	printf("%s = %d\n", syscall_name[n], reg0);
+	printf("%s %x = %d\n", syscall_name[n], regs.ARG1, reg0);
 }
 
 void call_open(int n){
@@ -15,13 +15,26 @@ void init_call(){
 	syscall_trace[OPEN] = &call_open;
 }
 
-char *check_str(BITS_TYPE addr){
+LOCAL_VAR is_user_data(BITS_TYPE addr){
 	if( regs.REG_SP <= addr && regs.REG_BP >= addr )
-		return get_str(addr);
+		return STACK;
 	else if( rodata_addr_start <= addr && rodata_addr_end > addr)
-		return get_str(addr, rodata_size);
+		return RODATA;
 	else
-		return NULL;
+		return NONE;
+}
+
+char *check_str(BITS_TYPE addr){
+	switch(is_user_data(addr)){
+		case STACK:
+			return get_str(addr);
+			break;
+		case RODATA:
+			return get_str(addr, rodata_size);
+			break;
+		default:
+			return NULL;
+	}
 }
 
 char *get_str(BITS_TYPE addr, int m){

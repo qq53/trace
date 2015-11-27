@@ -25,9 +25,12 @@
 
 typedef void (*fn)(int);
 
+enum LOCAL_VAR{STACK=0,RODATA,NONE};
+
 fn syscall_trace[CALL_NUMS] = {NULL};
 
 void init_call();
-long rodata_addr_start, rodata_addr_end, rodata_size;
+BITS_TYPE rodata_addr_start, rodata_addr_end, rodata_size;
 char *check_str(BITS_TYPE addr);
 char *get_str(BITS_TYPE addr,int size = MAX_STRLEN);
+LOCAL_VAR is_user_data(BITS_TYPE addr);
