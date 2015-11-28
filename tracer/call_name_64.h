@@ -1,4 +1,4 @@
-char *syscall_name[] = {"read",
+const char *syscall_name[] = {"read",
 	"write",
 	"open",
 	"close",

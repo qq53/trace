@@ -5,7 +5,7 @@ void empty(int n){
 }
 
 void call_open(int n){
-	printf("open %x = %x\n", regs.ARG1, reg0);
+	printf("open %x = %x\n", GET_ARGS(1), reg0);
 }
 
 void init_call(){

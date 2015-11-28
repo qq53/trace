@@ -1,4 +1,4 @@
-char *syscall_name[] = {"restart_syscall",
+const char*syscall_name[] = {"restart_syscall",
 	"exit",
 	"fork",
 	"read",

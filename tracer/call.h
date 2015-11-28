@@ -23,6 +23,12 @@
 	#define REG_BP	  rbp
 #endif
 
+#ifdef BIT32
+	#define GET_ARGS(x) (regs.esp+x-1)
+#else
+	#define GET_ARGS(x) (regs.ARG##x)
+#endif
+
 typedef void (*fn)(int);
 
 enum LOCAL_VAR{STACK=0,RODATA,NONE};
