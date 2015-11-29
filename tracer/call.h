@@ -23,11 +23,7 @@
 	#define REG_BP	  rbp
 #endif
 
-#ifdef BIT32
-	#define GET_ARGS(x) (regs.esp+x-1)
-#else
-	#define GET_ARGS(x) (regs.ARG##x)
-#endif
+#define GET_ARGS(x) (regs.ARG##x)
 
 typedef void (*fn)(int);
 

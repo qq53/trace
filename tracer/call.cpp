@@ -1,7 +1,7 @@
 #include "call.h"
 
 void empty(int n){
-	printf("%s %x = %d\n", syscall_name[n], regs.ARG1, reg0);
+	printf("%s %x = %d\n", syscall_name[n], GET_ARGS(1), reg0);
 }
 
 void call_open(int n){
