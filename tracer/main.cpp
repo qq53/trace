@@ -9,12 +9,21 @@
 #include <sys/user.h>
 #include <string.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #include "pre.h"
 #include "main.h"
 #include "call.cpp"
 
 #define STACK_SIZE 0x8000
+#define SUB_TIMEOUT 3
+
+bool sub_killed = false;
+
+void handler(int a){
+	sub_killed = true;
+	kill(child, SIGKILL);
+}
 
 int main(int argc, char *argv[])
 {
@@ -45,8 +54,12 @@ int main(int argc, char *argv[])
 		close(1);
 		execve(argv[1], args, NULL);
     } else {
+		signal(SIGALRM,handler);
+		alarm(SUB_TIMEOUT);
 		while (1) {
 			wait(&status);
+			if(sub_killed)
+				break;
 			if (WIFEXITED(status))
 				break;
 			call_num = ptrace(PTRACE_PEEKUSER, child, BYTES * ORIG_REG0, NULL);

@@ -22,6 +22,9 @@ def get_cstr(s):
 	s = s.decode('ascii')
 	return s[:s.find('\x00')]
 
+def trace_elf(cmd):
+	return os.popen(cmd).readlines()
+
 def elf(tmpf):
 	f = open(tmpf, 'rb')
 	header = {}
@@ -204,11 +207,8 @@ def elf(tmpf):
 
 		header['sh'].append(dtemp)
 
-	if header['class'] == '32':
-		d = os.popen('./tracer/tracer32 ' + tmpf + ' ' + rodata_addr + ' ' + rodata_size).readlines()
-	else:
-		d = os.popen('./tracer/tracer64 ' + tmpf + ' ' + rodata_addr + ' ' + rodata_size).readlines()
-	header['pss'] = d
+	cmd = ' '.join(['./tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
+	header['pss'] = trace_elf(cmd)
 
 	return header
 
