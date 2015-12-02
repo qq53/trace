@@ -93,14 +93,6 @@ table tr:first-child th{
 	margin: 10px 0 0 -33px;
 }
 
-.level1{
-	
-}
-
-.level2{
-	
-}
-
-.level3{
-	
+.danger{
+	border: 1px solid red;
 }
