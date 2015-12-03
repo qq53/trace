@@ -1,18 +1,37 @@
 #include "call.h"
+#include <netinet/in.h>
 
 void empty(int n){
 	printf("%s %x = %d\n", syscall_name[n], GET_ARGS(1), reg0);
 }
 
-void call_open(int n){
-	printf("open %x = %x\n", GET_ARGS(1), reg0);
+void bind64(int n){
+	BITS_TYPE p,port,addr;
+	p = GET_ARGS(2);
+	port = ntohs(ptrace(PTRACE_PEEKTEXT, child, p)>>16);
+	addr = ntohl(ptrace(PTRACE_PEEKTEXT, child, p+4));
+	printf("#bind port:%d addr:%x\n",port,addr);
+}
+
+void bind(int n){
+	BITS_TYPE p,port,addr;
+	if(GET_ARGS(1) != 2)
+		return;
+	p = ptrace(PTRACE_PEEKTEXT, child, GET_ARGS(2)+4);
+	port = ntohs(ptrace(PTRACE_PEEKTEXT, child, p)>>16);
+	addr = ntohl(ptrace(PTRACE_PEEKTEXT, child, p+4));
+	printf("#bind port:%d addr:%x\n",port,addr);
 }
 
 void init_call(){
 	for(int i = 0; i < CALL_NUMS; ++i)
 		syscall_trace[i] = &empty;
 	
-	syscall_trace[OPEN] = &call_open;
+#ifdef BIT32
+	syscall_trace[SOCKETCALL] = &bind;
+#else
+	syscall_trace[BIND] = &bind64;
+#endif
 }
 
 LOCAL_VAR is_user_data(BITS_TYPE addr){
