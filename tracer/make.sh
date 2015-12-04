@@ -3,9 +3,9 @@ export PATH
 
 function base_make(){
 	echo '#define BIT32' > pre.h
-	g++ basetracer.cpp -o basetracer32 -m32
+	g++ basemain.cpp -o basetracer32 -m32
 	echo '' > pre.h
-	g++ basetracer.cpp -o basetracer64
+	g++ basemain.cpp -o basetracer64
 }
 
 function make_32(){
