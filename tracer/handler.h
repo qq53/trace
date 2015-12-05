@@ -1,0 +1,22 @@
+const char* socketcall_name[] = {
+	"socket",
+	"bind",
+	"connect",
+	"listen",
+	"accept",
+	"getsockname",
+	"getpeername",
+	"socketpair",
+	"send",
+	"recv",
+	"sendto",
+	"recvfrom",
+	"shutdown",
+	"setsockopt",
+	"getsockopt",
+	"sendmsg",
+	"recvmsg",
+	"accept4",
+	"recvmmsg",
+	"sendmmsg"
+};

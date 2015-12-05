@@ -28,7 +28,10 @@ def trace_elf(cmd):
 	t = filter(lambda x:x!='',t)
 	t = list(map(lambda x:x.split(' '),t))
 	for i in t:
-		arr.append({'name':i[0],'args':' '.join(i[1:])})
+		if i[0][0] == '#':
+			arr.append({'name':i[0][1:],'args':' '.join(i[1:]),'class':'danger'})
+		else:
+			arr.append({'name':i[0],'args':' '.join(i[1:]),'class':''})
 	return arr
 
 def elf(tmpf):

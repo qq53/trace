@@ -7,7 +7,7 @@ void init_call(){
 		syscall_trace[i] = &empty;
 	
 #ifdef BIT32
-	syscall_trace[SOCKETCALL] = &bind;
+	syscall_trace[SOCKETCALL] = &socketcall;
 #else
 	syscall_trace[BIND] = &bind64;
 #endif
