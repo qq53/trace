@@ -23,7 +23,13 @@ def get_cstr(s):
 	return s[:s.find('\x00')]
 
 def trace_elf(cmd):
-	return os.popen(cmd).readlines()
+	arr = []
+	t = os.popen(cmd).read().split('\n')
+	t = filter(lambda x:x!='',t)
+	t = list(map(lambda x:x.split(' '),t))
+	for i in t:
+		arr.append({'name':i[0],'args':' '.join(i[1:])})
+	return arr
 
 def elf(tmpf):
 	f = open(tmpf, 'rb')
@@ -225,4 +231,4 @@ def print_var(var):
 		print(var)
 
 if __name__ == '__main__':
-	print_var(elf('tracer/test32'))
+	print_var(elf('tracer/test32')['pss'])

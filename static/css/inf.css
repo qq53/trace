@@ -42,8 +42,7 @@ table tr:first-child th{
 }
 
 .times > li:nth-child(even) > .text{
-	margin-left: 7% !important;
-	text-align: right;
+	margin-left: -2% !important;
 }
 
 .times > li  > .text{
@@ -95,4 +94,8 @@ table tr:first-child th{
 
 .danger{
 	border: 1px solid red;
+}
+
+.am-table{
+	line-height: 1.4rem;
 }
