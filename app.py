@@ -4,14 +4,10 @@
 # github: github.com/qq53
 
 from flask import Flask, request
-import codecs, time, json
-from urllib.parse import quote
 import os
 from jinja2 import Environment, FileSystemLoader
-from werkzeug.utils import secure_filename
-import sys
 from elf import elf
-import stat
+import codecs
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -25,20 +21,21 @@ def home():
 		
 @app.route('/', methods=['POST'])
 def home_POST():
-	f = request.files['fileToUpload']
-	f.save('tmp')
-	os.chmod('tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        f = request.files['fileToUpload']
+        f.save('tmp')
+        os.chmod('tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 	
-	result = elf('tmp')
-	os.remove('tmp')
-	template = env.get_template('inf.html')
-	ss = result['sh']
-	ps = result['ph']
-	pss = result['pss']
-	result.pop('sh')
-	result.pop('ph')
-	result.pop('pss')
-	return template.render(header=result,sections=ss,programs=ps,process=pss)
+        result = elf('tmp')
+        os.remove('tmp')
+        template = env.get_template('inf.html')
+        ss = result['sh']
+        ps = result['ph']
+        pss = result['pss']
+        result.pop('sh')
+        result.pop('ph')
+        result.pop('pss')
+
+        return template.render(header=result,sections=ss,programs=ps,process=pss)
 
 @app.route('/inf', methods=['POST'])
 def inf_POST():
