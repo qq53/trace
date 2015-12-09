@@ -5,6 +5,8 @@
 import struct
 import os
 
+cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
+
 def choose(d, i):
 	for k,v in d.items():
 		if v == i:
@@ -216,7 +218,7 @@ def elf(tmpf):
 
 		header['sh'].append(dtemp)
 
-	cmd = ' '.join(['./tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
+	cmd = ' '.join(['.'+cwd+'tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
 	header['pss'] = trace_elf(cmd)
 
 	return header

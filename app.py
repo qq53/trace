@@ -23,12 +23,12 @@ def home():
 @app.route('/', methods=['POST'])
 def home_POST():
 	f = request.files['fileToUpload']
-	f.save('tmp')
-	#os.chmod('tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+	f.save(cwd+'tmp')
+	os.chmod(cwd+'tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
-	result = elf('tmp')
+	result = elf(cwd+'tmp')
 
-	os.remove('tmp')
+	os.remove(cwd+'tmp')
 	template = env.get_template('inf.html')
 	ss = result['sh']
 	ps = result['ph']
