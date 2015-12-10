@@ -5,7 +5,8 @@
 import struct
 import os
 
-cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
+#cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
+cwd = '/'
 
 def choose(d, i):
 	for k,v in d.items():

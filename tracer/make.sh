@@ -35,16 +35,22 @@ if [ "$#" -eq 0 ]; then
 	exit 0
 fi
 
-if [ $1 == '32' ]; then
+case $1 in
+'32')
 	base_make
 	make_32
-elif [ $1 == '64' ]; then
+	;;
+'64')
 	base_make
 	make_64
-elif [ $1 == 'base' ]; then
+	;;
+'base')
 	base_make
-elif [ $1 == 'clean' ]; then
+	;;
+'clean')
 	clean
-else
+	;;
+*)
 	echo 'param error'
-fi
+	;;
+esac

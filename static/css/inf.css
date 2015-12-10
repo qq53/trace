@@ -42,7 +42,7 @@ table tr:first-child th{
 }
 
 .times > li:nth-child(even) > .text{
-	margin-left: -2% !important;
+	margin-left: 7% !important;
 }
 
 .times > li  > .text{
@@ -98,4 +98,11 @@ table tr:first-child th{
 
 .am-table{
 	font-size: 1.4rem;
+}
+
+.trace-title{
+	font-size: 20px;
+	text-align:  center;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
 }
