@@ -262,6 +262,8 @@
       var menuItemLink = this.menuItemLinks[i];
       this._touchEffectHandler( menuItemLink, num );
     }
+	for(var i = 2; i <= 5; ++i)
+		$('#tab'+i).css({'position':'fixed'});
   };
 
   /**
@@ -304,10 +306,14 @@
 			
 			//change wrapper 
 			for(var i = 1; i <= 5; ++i){
+				if(i != curNum)
+					$('#tab'+i).css({'position':'fixed'});
+				else
+					$('#tab'+i).css({'position':'absolute'});
 				if( i <= curNum)
 					$('#tab'+i)[0].className='tab tab-show';
-				else
-					$('#tab'+i)[0].className='tab';				
+				else		
+					$('#tab'+i)[0].className='tab';
 			}
 			$('#tab'+e.currentTarget.getAttribute('num'))[0].className = 'tab tab-show';
 		}
