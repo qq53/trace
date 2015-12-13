@@ -13,10 +13,8 @@ def make():
 	env = Environment(loader = FileSystemLoader(cwd+'templates'))
 	template_index = env.get_template('index.html')
 	
-	u = 'http://blog.vap0r.cn'
-
 	with codecs.open(cwd+'index.html', 'w', 'utf-8') as f:
-		f.write(template_index.render(index=u))
+		f.write(template_index.render())
 
 if __name__ == '__main__':
 	make()

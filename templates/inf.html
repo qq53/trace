@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE>
 <html class="no-js">
 <head>
   <meta charset="utf-8">
@@ -7,7 +7,7 @@
   <meta name="keywords" content="">
   <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Linux ELF analysis and evaluation</title>
+  <title>Insight</title>
 
   <!-- Set render engine for 360 browser -->
   <meta name="renderer" content="webkit">
@@ -31,131 +31,169 @@
   <meta name="msapplication-TileImage" content="static/i/app-icon72x72@2x.png">
   <meta name="msapplication-TileColor" content="#0e90d2">
 
-  <link rel="stylesheet" href="static/css/amazeui.min.css">
+  <link rel="stylesheet" href="static/css/amazeui.flat.css">
   <link rel="stylesheet" href="static/css/header.css">
   <link rel="stylesheet" href="static/css/footer.css">
   <link rel="stylesheet" href="static/css/inf.css">
+  <link rel="stylesheet" href="static/css/nav.css">
 </head>
 <body>
-
-<!--在这里编写你的代码-->
-
-{% include "header.html" %}
-
-<div class="am-g body">
-	<div id="contents">
-		<div class="am-tabs" data-am-tabs>
-			<ul class="am-tabs-nav am-nav am-nav-tabs">
-				<li class="am-active"><a href="#tab1">头信息</a></li>
-				<li><a href="#tab2">区段</a></li>
-				<li><a href="#tab3">程序段</a></li>
-				<li><a href="#tab4">dongtai跟踪</a></li>
-				<li><a href="#tab5">jingtai跟踪</a></li>
-			</ul>
-
-			<div class="am-tabs-bd">
-				<div class="am-tab-panel am-fade am-in am-active" id="tab1">
-					<table class="am-table">
-						<tr>
-							<th>attr</th>
-							<th>value</th>
-						</tr>
-						{% for k,v in header.items() %}
-						<tr>
-							<td>{{ k }}</td>
-							<td>{{ v }}</td>
-						</tr>
-						{% endfor %}
-					</table>
-				</div>
-				<div class="am-tab-panel" id="tab2">
-					<table class="am-table">
-						<tr>
-							<th>name</th>
-							<th>type</th>	
-							<th>flags</th>
-							<th>addr</th>
-							<th>offset</th>
-							<th>size</th>
-							<th>link</th>
-							<th>info</th>
-							<th>addralign</th>
-							<th>entsize</th>
-						</tr>
-						{% for d in sections %}
-						<tr>
-							<td>{{ d.name }}</td>
-							<td>{{ d.type }}</td>
-							<td>{{ d.flags }}</td>
-							<td>{{ d.addr }}</td>
-							<td>{{ d.offset }}</td>
-							<td>{{ d.size }}</td>
-							<td>{{ d.link }}</td>
-							<td>{{ d.info }}</td>
-							<td>{{ d.addralign }}</td>
-							<td>{{ d.entsize }}</td>
-						</tr>
-						{% endfor %}
-					</table>
-				</div>
-				<div class="am-tab-panel" id="tab3">
-					<table class="am-table">
-						<tr>
-							<th>type</th>
-							<th>offset</th>	
-							<th>vaddr</th>
-							<th>paddr</th>	
-							<th>filesz</th>
-							<th>memsz</th>	
-							<th>flags</th>
-							<th>align</th>								
-						</tr>
-						{% for d in programs %}
-						<tr>
-							<td>{{ d.type }}</td>
-							<td>{{ d.offset }}</td>
-							<td>{{ d.vaddr }}</td>
-							<td>{{ d.paddr }}</td>
-							<td>{{ d.filesz }}</td>
-							<td>{{ d.memsz }}</td>
-							<td>{{ d.flags }}</td>
-							<td>{{ d.align }}</td>
-						</tr>
-						{% endfor %}
-					</table>
-				</div>
-				<div class="am-tab-panel" id="tab4">
-					<div class="trace-title">dong tai gen zong</div>
-					<ul class="times">
-					{% for i in process %}
-						<li>
-							<div class="icon"></div>
-							<div class="text {{ i.class }}">{{  i.name  }}<br/>{{ i.args }}</div>
-						</li>	
+	<div id="wrapper" class="wrapper">
+		<div id="tab1" class="tab tab-show">
+			<div class="title">
+				<div class="title-text main-text">头部</div>
+				<div class="title-des sub-text">This is ELF Header Information</div>
+			</div>
+			<div class="container">
+				<table class="am-table">
+					<tr>
+						<th>attr</th>
+						<th>value</th>
+					</tr>
+					{% for k,v in header.items() %}
+					<tr>
+						<td>{{ k }}</td>
+						<td>{{ v }}</td>
+					</tr>
 					{% endfor %}
-					</ul>
-				</div>
-				<div class="am-tab-panel" id="tab5">
-					<div class="trace-title">jing tai gen zong</div>
-					<ul>
-						<li>call open</li>	
-					</ul>
-				</div>
+				</table>
+			</div>
+		</div>
+		<div id="tab2" class="tab">
+			<div class="title">
+				<div class="title-text main-text">区段</div>
+				<div class="title-des sub-text">This is ELF Sections Information</div>
+			</div>
+			<div class="container">
+				<table class="am-table">
+					<tr>
+						<th>name</th>
+						<th>type</th>	
+						<th>flags</th>
+						<th>addr</th>
+						<th>offset</th>
+						<th>size</th>
+						<th>link</th>
+						<th>info</th>
+						<th>addralign</th>
+						<th>entsize</th>
+					</tr>
+					{% for d in sections %}
+					<tr>
+						<td>{{ d.name }}</td>
+						<td>{{ d.type }}</td>
+						<td>{{ d.flags }}</td>
+						<td>{{ d.addr }}</td>
+						<td>{{ d.offset }}</td>
+						<td>{{ d.size }}</td>
+						<td>{{ d.link }}</td>
+						<td>{{ d.info }}</td>
+						<td>{{ d.addralign }}</td>
+						<td>{{ d.entsize }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<div id="tab3" class="tab">
+			<div class="title">
+				<div class="title-text main-text">程序头</div>
+				<div class="title-des sub-text">This is ELF Program Information</div>
+			</div>
+			<div class="container">
+				<table class="am-table">
+					<tr>
+						<th>type</th>
+						<th>offset</th>	
+						<th>vaddr</th>
+						<th>paddr</th>	
+						<th>filesz</th>
+						<th>memsz</th>	
+						<th>flags</th>
+						<th>align</th>								
+					</tr>
+					{% for d in programs %}
+					<tr>
+						<td>{{ d.type }}</td>
+						<td>{{ d.offset }}</td>
+						<td>{{ d.vaddr }}</td>
+						<td>{{ d.paddr }}</td>
+						<td>{{ d.filesz }}</td>
+						<td>{{ d.memsz }}</td>
+						<td>{{ d.flags }}</td>
+						<td>{{ d.align }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<div id="tab4" class="tab">
+			<div class="title">
+				<div class="title-text main-text">动态跟踪</div>
+				<div class="title-des sub-text">Dynamic tracing</div>
+			</div>
+			<div class="container">
+				<ul class="times">
+				{% for i in process %}
+					<li>
+						<div class="icon"></div>
+						<div class="text {{ i.class }}">{{  i.name  }}<br/>{{ i.args }}</div>
+					</li>	
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div id="tab5" class="tab">
+			<div class="title">
+				<div class="title-text main-text">静态跟踪</div>
+				<div class="title-des sub-text">静态反汇编程序进行解析</div>
+			</div>
+			<div class="container">
+				<ul>
+					<li>call open</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-</div>
 
-{% include "footer.html" %}
-
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="static/js/jquery.min.js"></script>
-<!--<![endif]-->
-<!--[if lte IE 8 ]>
-<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="static/js/amazeui.ie8polyfill.min.js"></script>
-<![endif]-->
-<script src="static/js/amazeui.min.js"></script>
+	<button id="mm-menu-toggle" class="mm-menu-toggle">Toggle Menu</button>
+	<nav id="mm-menu" class="mm-menu">
+	  <div class="mm-menu__header">
+	    <h2 class="mm-menu__title">Insight</h2>
+	  </div>
+	  <ul class="mm-menu__items">
+	    <li class="mm-menu__item">
+	      <a class="mm-menu__link mm-menu__click" href="#">
+	        <span class="mm-menu__link-text">头信息</span>
+	      </a>
+	    </li>
+	    <li class="mm-menu__item">
+	      <a class="mm-menu__link" href="#" >
+	        <span class="mm-menu__link-text">区段信息</span>
+	      </a>
+	    </li>
+	    <li class="mm-menu__item">
+	      <a class="mm-menu__link" href="#">
+	        <span class="mm-menu__link-text">程序头信息</span>
+	      </a>
+	    </li>
+	    <li class="mm-menu__item">
+	      <a class="mm-menu__link" href="#">
+	        <span class="mm-menu__link-text">动态跟踪</span>
+	      </a>
+	    </li>
+	    <li class="mm-menu__item">
+	      <a class="mm-menu__link" href="#">
+	        <span class="mm-menu__link-text">静态跟踪</span>
+	      </a>
+	    </li>
+	  </ul>
+	</nav>
+	
+	{% include "footer.html" %}
+	
+	<script src="static/js/jquery.min.js"></script>
+	<script src="static/js/amazeui.min.js"></script>
+	<script src="static/js/production/materialMenu.js"></script>
 </body>
 </html>

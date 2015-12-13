@@ -1,17 +1,7 @@
-/* Write your styles */
-.body{
-	padding: 40px;
-	text-align: center;
-	background: url('../i/back.png') no-repeat;
-	min-height: 100%;
-}
-
-#upload-out{
-	display: inline-block;
-	margin-top: 20%;
-}
-
 #upload{
+	position: absolute;
+	top: 45%;
+	left: 29%;
 	width: 500px;
 }
 
@@ -20,6 +10,30 @@
 }
 
 #contents:hover{
-	-webkit-transition: transform linear 1s;	/* Safari ºÍ Chrome */
+	-webkit-transition: transform linear 1s;	/* Safari å’Œ Chrome */
 	-webkit-transform: rotateY(360deg);
+}
+
+#file-name{
+	border: none !important;
+	background-color: rgba(255,255,255,0.8)
+}
+
+#upbtn{
+	background-color: rgba(255,255,255,0.8);
+	margin-left: 1px;
+}
+
+.sub-title{
+    position: absolute;
+    top: 89%;
+    color: #444;
+    left: 43%;
+    font-size: 16px;
+	margin: 1.2em 0;
+	font-family: 'Roboto-Light';
+}
+
+#footer{
+	margin-bottom: -0.6em;
 }

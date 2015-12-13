@@ -1,0 +1,25 @@
+.large-header {
+	position: relative;
+	width: 100%;
+	background: #333;
+	overflow: hidden;
+	background-size: cover;
+	background-position: center bottom;
+	z-index: 1;
+	background-image: url('../img/demo-1-bg.jpg');
+}
+
+.main-title {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	color: #f9f1e9;
+	text-align: center;
+	top: 0;
+	left: 50%;
+	transform: translate3d(-50%,0,0);
+	font-weight: normal;
+	font-size: 6em;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+	font-family: 'Roboto-Light';
+}

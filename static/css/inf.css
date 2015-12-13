@@ -1,6 +1,17 @@
-/* Write your styles */
+@font-face {
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'codropsicons';
+	src:url('../fonts/codropsicons/codropsicons.eot');
+	src:url('../fonts/codropsicons/codropsicons.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/codropsicons/codropsicons.woff') format('woff'),
+		url('../fonts/codropsicons/codropsicons.ttf') format('truetype'),
+		url('../fonts/codropsicons/codropsicons.svg#codropsicons') format('svg');
+}
+
 body{
-	background: url('../i/back.png');
+	background: #fff;
+	overflow-x: hidden;
 }
 
 .body{
@@ -102,7 +113,51 @@ table tr:first-child th{
 
 .trace-title{
 	font-size: 20px;
-	text-align:  center;
 	border-bottom: 1px solid #ccc;
 	padding-bottom: 10px;
+}
+
+.title{
+	height: 150px;
+	background-color: #607d8b;
+	padding: 24px 104px;
+	color: black;
+}
+
+.title-text{
+	font-size: 2.4em;
+}
+
+.title-des{
+	font-size: 1.2em;
+}
+
+.tab{
+	transition: transform 600ms;
+	transform: translateX(100%);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.tab-show{
+	transform: translateX(0);
+}
+
+.mm-menu__click{
+	color: #607d8b !important;
+}
+
+#tab1 .container{z-index:0;}
+#tab2 .container{z-index:1;}
+#tab3 .container{z-index:2;}
+#tab4 .container{z-index:3;}
+#tab5 .container{z-index:4;}
+
+#footer{
+	z-index: 6;
+}
+
+.container{
+	background: white;
 }

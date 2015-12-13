@@ -2,4 +2,8 @@
 	position: absolute;
 	text-align: center;
 	width: 100%;
+    bottom: 0;
+    font-size: 15px;
+    color: #444;
+	font-family: 'Roboto-Light';
 }

@@ -22,22 +22,25 @@ def home():
 		
 @app.route('/', methods=['POST'])
 def home_POST():
-	f = request.files['fileToUpload']
-	f.save(cwd+'tmp')
-	os.chmod(cwd+'tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+    f = request.files['fileToUpload']
+    f.save(cwd+'tmp')
+    os.chmod(cwd+'tmp',stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
-	result = elf(cwd+'tmp')
+    result = elf(cwd+'tmp')
 
-	os.remove(cwd+'tmp')
-	template = env.get_template('inf.html')
-	ss = result['sh']
-	ps = result['ph']
-	pss = result['pss']
-	result.pop('sh')
-	result.pop('ph')
-	result.pop('pss')
+    os.remove(cwd+'tmp')
+    template = env.get_template('inf.html')
+    ss = result['sh']
+    ps = result['ph']
+    pss = result['pss']
+    result.pop('sh')
+    result.pop('ph')
+    result.pop('pss')
 
-	return template.render(header=result,sections=ss,programs=ps,process=pss)
+    a = template.render(header=result,sections=ss,programs=ps,process=pss)
+    with open('tt','wt') as f:
+        f.write(a)
+    return a
 
 @app.route('/inf', methods=['POST'])
 def inf_POST():

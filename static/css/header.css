@@ -1,18 +1,21 @@
-html, body{
-	height: 100%;
+@font-face {
+	font-family: 'Roboto-Thin';
+	src:url('../fonts/Roboto-Thin.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
 }
 
-a{
-	cursor: pointer;
-	font-weight: lighter;
-	color: #333;
+@font-face {
+	font-family: 'Roboto-Light';
+	src:url('../fonts/Roboto-Light.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
 }
 
-#header{
-	text-align: center;
-	font-size: 50px;
-	position: absolute;
-	width: 100%;
-	border-bottom: 1px solid #ccc;
-	box-shadow: 0 0 1px #aaa;
+.main-text{
+	opacity: 0.87;
+}
+
+.sub-text{
+	opacity: 0.54;	
 }
