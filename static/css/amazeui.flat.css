@@ -2068,7 +2068,7 @@ th {
 .am-table > thead > tr > td,
 .am-table > tbody > tr > td,
 .am-table > tfoot > tr > td {
-  padding: 0.7rem;
+  padding: 0.3rem 0;
   line-height: 1.6;
   vertical-align: top;
   border-top: 1px solid #dddddd;
