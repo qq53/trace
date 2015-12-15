@@ -1,7 +1,7 @@
 #footer{
 	position: absolute;
-	text-align: center;
-	width: 100%;
+	left: 50%;
+	transform: translateX(-50%);
     bottom: 0;
     font-size: 15px;
     color: #444;

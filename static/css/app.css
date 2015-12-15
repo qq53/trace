@@ -1,8 +1,9 @@
 #upload{
 	position: absolute;
 	top: 45%;
-	left: 29%;
+	left: 50%;
 	width: 500px;
+	transform: translateX(-50%);
 }
 
 .hidden{
@@ -27,14 +28,15 @@
 
 .sub-title{
     position: absolute;
-    top: 89%;
+    bottom: 0;
     color: #444;
-    left: 43%;
+    left: 50%;
     font-size: 16px;
-	margin: 1.2em 0;
+	margin-bottom: 2.4rem;
 	font-family: 'Roboto-Light';
+	transform: translateX(-50%);
 }
 
 #footer{
-	margin-bottom: -0.6em;
+	margin-bottom: 0.8rem;
 }
