@@ -16,7 +16,6 @@
 #include "call.cpp"
 
 #define STACK_SIZE 0x8000
-#define SUB_TIMEOUT 3
 
 bool sub_killed = false;
 
@@ -55,7 +54,6 @@ int main(int argc, char *argv[])
 		execve(argv[1], args, NULL);
     } else {
 		signal(SIGALRM,handler);
-		alarm(SUB_TIMEOUT);
 		while (1) {
 			wait(&status);
 			if(sub_killed)
