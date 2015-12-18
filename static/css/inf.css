@@ -163,3 +163,34 @@ table tr:first-child th{
 .container{
 	background: white;
 }
+
+#terminator{
+    position: fixed;
+    top: 0;
+    right: 50%;
+    height: 200px;
+    width: 700px;
+    transform: translateX(50%);
+    transition: transform .3s;
+    z-index: 6;
+    color: wheat;
+    padding: 10px;
+    background: rgba(0,0,0,0.6);
+    overflow: overlay;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+#terminator input{
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.input-text:before{
+	content: '> ';
+}
+
+.termin-hidden{
+    transform: translate(50%,-160px) !important;	
+}
