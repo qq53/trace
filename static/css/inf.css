@@ -165,20 +165,22 @@ table tr:first-child th{
 }
 
 #terminator{
-    position: fixed;
+	position: fixed;
     top: 0;
-    right: 50%;
+    left: 50%;
     height: 200px;
-    width: 700px;
-    transform: translateX(50%);
-    transition: transform .3s;
+    width: 500px;
+    transform: translateX(-50%);
+    transition: transform.3s;
     z-index: 6;
     color: wheat;
     padding: 10px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.7);
     overflow: overlay;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+}
+
+.termin-hidden{
+    transform: translate(-50%,-200px) !important;	
 }
 
 #terminator input{
@@ -191,6 +193,27 @@ table tr:first-child th{
 	content: '> ';
 }
 
-.termin-hidden{
-    transform: translate(50%,-160px) !important;	
+#termin-toggle{
+    width: 48px;
+    position: absolute;
+    height: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+	opacity: 1;
+	transition: opacity .3s;
+}
+
+#termin-toggle:before{
+    width: 48px;
+    content: '';
+    height: 24px;
+    position: absolute;
+    top: -8px;
+}
+
+.termin-toggle-hidden{
+	opacity: 0 !important;
 }

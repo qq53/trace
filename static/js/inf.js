@@ -8,12 +8,15 @@ $('.input-text').keydown(function(e){
 	}
 });
 
-$('#terminator').click(function(e){
-	this.classList.remove('termin-hidden');
+$('#termin-toggle').click(function(e){
+	$('#terminator')[0].classList.remove('termin-hidden');
+	$('#termin-toggle')[0].classList.add('termin-toggle-hidden');
 	e.stopPropagation();
 });
 
 $('#tab4').click(function(){
-	if( this.classList.contains('tab-show') )
+	if( this.classList.contains('tab-show') ){
 		$('#terminator')[0].classList.add('termin-hidden');
+		$('#termin-toggle')[0].classList.remove('termin-toggle-hidden');
+	}
 });
