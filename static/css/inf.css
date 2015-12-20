@@ -163,3 +163,57 @@ table tr:first-child th{
 .container{
 	background: white;
 }
+
+#terminator{
+	position: fixed;
+    top: 0;
+    left: 50%;
+    height: 200px;
+    width: 500px;
+    transform: translateX(-50%);
+    transition: transform.3s;
+    z-index: 6;
+    color: wheat;
+    padding: 10px;
+    background: rgba(0,0,0,0.7);
+    overflow: overlay;
+}
+
+.termin-hidden{
+    transform: translate(-50%,-200px) !important;	
+}
+
+#terminator input{
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.input-text:before{
+	content: '> ';
+}
+
+#termin-toggle{
+    width: 48px;
+    position: absolute;
+    height: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+	opacity: 1;
+	transition: opacity .3s;
+}
+
+#termin-toggle:before{
+    width: 48px;
+    content: '';
+    height: 24px;
+    position: absolute;
+    top: -8px;
+}
+
+.termin-toggle-hidden{
+	opacity: 0 !important;
+}

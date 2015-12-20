@@ -25,6 +25,9 @@ def get_cstr(s):
 	s = s.decode('ascii')
 	return s[:s.find('\x00')]
 
+def need_wait(cmd):
+	pass
+	
 def trace_elf(cmd):
 	arr = []
 	t = os.popen(cmd).read().split('\n')
