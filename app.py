@@ -45,6 +45,15 @@ def home_POST():
 @app.route('/inf', methods=['POST'])
 def inf_POST():
 	return request.form['data']
-	
+
+@app.route('/syn_trace', methods=['POST'])
+def inf_POST():
+    with open('tracer/subin','wt') as f:
+        f.write(request.form['input'])
+    pass
+    with open('tracer/subout','rt') as f:
+        out = f.read()
+    return
+
 if __name__ == '__main__':
 	app.run(port=80,host='0.0.0.0')

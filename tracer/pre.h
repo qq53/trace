@@ -1,1 +1,2 @@
-#define SKIP_CALLS_NUM 25
+#define BIT32
+#define SKIP_CALLS_NUM 23
