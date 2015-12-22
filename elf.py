@@ -37,6 +37,14 @@ def trace_elf(cmd):
 			arr.append({'name':i[0],'args':' '.join(i[1:]),'class':''})
 	return arr
 
+def get_input():
+    with open('tracer/subin','rt') as f:
+        return f.read()
+
+def get_output():
+    with open('tracer/subout','rt') as f:
+        return f.read()
+	
 def elf(tmpf):
 	f = open(tmpf, 'rb')
 	header = {}
