@@ -16,13 +16,13 @@
 #include "call.cpp"
 
 #define STACK_SIZE 0x8000
-#define TIME_OUT 3
 
 bool sub_killed = false;
 
 void handler(int a){
 	sub_killed = true;
 	kill(child, SIGKILL);
+	system("scrot");
 }
 
 int main(int argc, char *argv[])
@@ -53,16 +53,16 @@ int main(int argc, char *argv[])
 		else
 			args = &argv[4];
 
-		fout = open("subout",O_CREAT | O_RDWR,0666);
 		fin = open("subin",O_CREAT | O_RDWR,0666);
-		dup2(fout,1);
 		dup2(fin,0);
-		close(fout);
 		close(fin);
 		execve(argv[1], args, NULL);
     } else {
 		signal(SIGALRM,handler);
-		alarm(3);
+		fout = open("out",O_CREAT | O_RDWR,0666);
+		dup2(fout,1);
+		close(fout);
+		alarm(1);
 		while (1) {
 			wait(&status);
 			if(sub_killed)

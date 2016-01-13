@@ -135,19 +135,23 @@
 				<div class="title-text main-text">动态跟踪</div>
 				<div class="title-des sub-text">动态跟踪程序流程</div>
 			</div>
+			{% if process %}
+			{% else %}
 			<div id="terminator" class="termin-hidden">
-				<div class="output-text">123</div>
 				<div class="input-text"><input></input></div>
 			</div>
 			<div id="termin-toggle"></div>
+			{% endif %}
 			<div class="container">
 				<ul class="times">
+				{% if process %}
 				{% for i in process %}
 					<li>
 						<div class="icon"></div>
 						<div class="text {{ i.class }}">{{  i.name  }}<br/>{{ i.args }}</div>
 					</li>	
 				{% endfor %}
+				{% endif %}
 				</ul>
 			</div>
 			{% include "footer.html" %}

@@ -45,7 +45,7 @@ table tr:first-child th{
 	width: 7px;
 	background: #afdcf8;
 	left: 50%;
-	margin-left: -10px;
+	transform: translateX(-50%);
 }
 
 .times > li{
@@ -53,11 +53,12 @@ table tr:first-child th{
 }
 
 .times > li:nth-child(even) > .text{
-	margin-left: 7% !important;
+	margin-left: -340px;
+	left: 50%;
 }
 
 .times > li  > .text{
-	margin: 0 0 30px 52%;
+	margin-bottom: 30px;
 	background: #3594cb;
 	color: #fff;
 	padding: 10px;
@@ -67,6 +68,8 @@ table tr:first-child th{
 	position: relative;
 	border-radius: 5px;
 	width: 300px;
+	left: 50%;
+	margin-left: 40px;
 }
 
 .times > li > .text:after{
@@ -100,7 +103,8 @@ table tr:first-child th{
 	text-align: center;
 	left: 50%;
 	top: 0;
-	margin: 10px 0 0 -33px;
+	margin-top: 10px;
+	transform: translateX(-50%);
 }
 
 .danger{
@@ -157,7 +161,6 @@ table tr:first-child th{
 
 #footer{
 	z-index: 6;
-	position: relative;
 }
 
 .container{
