@@ -22,7 +22,6 @@ bool sub_killed = false;
 void handler(int a){
 	sub_killed = true;
 	kill(child, SIGKILL);
-	system("scrot");
 }
 
 int main(int argc, char *argv[])

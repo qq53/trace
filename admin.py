@@ -10,6 +10,8 @@ app = Flask(__name__)
 		
 @app.route('/', methods=['GET'])
 def home_POST():
+    os.remove('subin')
+    os.remove('out')
     os.system('docker kill $(docker ps -a -q) && docker rm $(docker ps -a -q)')
     os.system('docker run -d -p 80:80 debian06 ./root/trace/app.py')
 
