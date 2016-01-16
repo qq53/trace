@@ -40,13 +40,6 @@ def trace_elf(cmd):
                             arr.append({'name':i[0],'args':' '.join(i[1:]),'class':''})
             return arr
 
-def has_input(f):
-    num = int(os.popen('objdump -d '+f+' | egrep "^[0123456789]+[^_]*scanf" | wc -l').read())
-    if num > 0:
-        return True
-    else:
-        return False
-
 def elf(tmpf):
         f = open(tmpf, 'rb')
         header = {}
@@ -229,9 +222,8 @@ def elf(tmpf):
 
                 header['sh'].append(dtemp)
 
-        if has_input(tmpf) == False:
-            cmd = ' '.join(['.'+cwd+'tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
-            header['pss'] = trace_elf(cmd)
+        cmd = ' '.join(['.'+cwd+'tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
+        header['pss'] = trace_elf(cmd)
 
         return header
 

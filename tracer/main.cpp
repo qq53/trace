@@ -61,7 +61,6 @@ int main(int argc, char *argv[])
 		fout = open("out",O_CREAT | O_RDWR,0666);
 		dup2(fout,1);
 		close(fout);
-		alarm(1);
 		while (1) {
 			wait(&status);
 			if(sub_killed)

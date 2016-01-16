@@ -70,5 +70,12 @@ def syn_trace_POST():
         f.write(request.form['data']+'\n')
     return session['outlines']
 
+@app.route('/running', methods=['GET'])
+def running_GET():
+    l = os.popen('ps -a|egrep "tracer\d{2}"').readlines()
+    if len(l) > 0:
+        return True
+    return False
+
 if __name__ == '__main__':
     app.run(port=80,host='0.0.0.0')
