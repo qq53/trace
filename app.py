@@ -14,8 +14,6 @@ app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
 env = Environment(loader = FileSystemLoader(cwd+'templates'))
 
-app.secret_key = os.urandom(24)
-
 def rm(path):
     if os.path.isfile(path):
         os.remove(path)
@@ -26,6 +24,10 @@ def home():
         d = f.read()
         return d
 		
+def flush_outlines():
+    with open('out','rt') as f:
+        session['outlines'].append(len(f.readlines()))
+
 @app.route('/', methods=['POST'])
 def home_POST():
     f = request.files['fileToUpload']
@@ -47,13 +49,13 @@ def home_POST():
     result.pop('ph')
     result.pop('pss')
 
-    print('1')
 
-    with open('out','rt') as f:
-        print('2')
-        session['outlines'] = len(f.readlines())
+    session['outlines'] = []
+    session['class'] = result['class']
+    session['ro_addr'] = result['ro_addr']
+    session['ro_size'] = result['ro_size']
 
-    print('3')
+    flush_outlines()
 
     return template.render(header=result,sections=ss,programs=ps,process=pss)
 
@@ -61,14 +63,30 @@ def home_POST():
 def inf_POST():
     return request.form['data']
 
-@app.route('/syn_trace', methods=['POST'])
-def syn_trace_POST():
+def kill_tracer():
+    p32 = os.popen('ps --no-header -C tracer32 -o pid').read()
+    if p32 != '':
+        os.system('kill -s 14 '+p32)
+        return
+    p64 = os.popen('ps --no-header -C tracer64 -o pid').read()
+    if p64 != '':
+        os.system('kill -s 14 '+p64)
+
+@app.route('/input', methods=['POST'])
+def input_POST():
     d = request.form['data']
     if d == '':
         return ''
     with open('subin','a') as f:
         f.write(request.form['data']+'\n')
-    return session['outlines']
+
+    kill_tracer()
+    flush_outlines()
+    out = str(' '.join([cwd+'tracer/tracer'+session['class'],'tmp',session['ro_addr'],session['ro_size'],]))
+    #retrace
+
+    #return multi outputs
+    return str(session['outlines'])
 
 @app.route('/running', methods=['GET'])
 def running_GET():
@@ -78,4 +96,5 @@ def running_GET():
     return False
 
 if __name__ == '__main__':
+    app.secret_key = os.urandom(24)
     app.run(port=80,host='0.0.0.0')

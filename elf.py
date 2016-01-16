@@ -29,7 +29,6 @@ def trace_elf(cmd):
         arr = []
         os.system(cmd)
         with open('out') as f:
-            #t = os.popen(cmd).read().split('\n')
             t = f.read().split('\n')
             t = filter(lambda x:x!='',t)
             t = list(map(lambda x:x.split(' '),t))
@@ -217,11 +216,11 @@ def elf(tmpf):
                 dtemp['addralign'] = hex(temp[8])
                 dtemp['entsize'] = hex(temp[9])
                 if dtemp['name'] == '.rodata':
-                        rodata_addr = str(int(dtemp['addr'],16))
-                        rodata_size = str(int(dtemp['size'],16))
+                        header['ro_addr'] = rodata_addr = str(int(dtemp['addr'],16))
+                        header['ro_size'] = rodata_size = str(int(dtemp['size'],16))
 
                 header['sh'].append(dtemp)
-
+        
         cmd = ' '.join(['.'+cwd+'tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
         header['pss'] = trace_elf(cmd)
 

@@ -1,7 +1,7 @@
-	$('.input-text').keydown(function(e){
-		s = $(this);
-		if( e.which == 13){
-		$.post("syn_trace",
+$('.input-text').keydown(function(e){
+	s = $(this);
+	if( e.which == 13){
+		$.post("/input",
 		{
 			data:s.children('input').val()
 		},
@@ -29,6 +29,6 @@ $('#tab4').click(function(e){
 	}
 });
 
-$('.input-text input').click(function(e){
+$('#terminator').click(function(e){
 	e.stopPropagation();
 });
