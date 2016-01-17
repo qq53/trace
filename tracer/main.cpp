@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     int insyscall = 0;
 	int count = 0;
 	char **args;
-	int fout,fin;
+	int fout,fin,fout1;
 
 	if(argc < 4){
 		printf("Usage: tracer xx rodata_addr rodata_size\n");
@@ -55,12 +55,15 @@ int main(int argc, char *argv[])
 		fin = open("subin",O_CREAT | O_RDWR,0666);
 		dup2(fin,0);
 		close(fin);
+		fout = open("subout",O_CREAT | O_RDWR | O_TRUNC,0666);
+		dup2(fout,1);
+		close(fout);
 		execve(argv[1], args, NULL);
     } else {
 		signal(SIGALRM,handler);
-		fout = open("out",O_CREAT | O_RDWR | O_TRUNC,0666);
-		dup2(fout,1);
-		close(fout);
+		fout1 = open("out",O_CREAT | O_RDWR | O_TRUNC,0666);
+		dup2(fout1,1);
+		close(fout1);
 		while (1) {
 			wait(&status);
 			if(sub_killed)

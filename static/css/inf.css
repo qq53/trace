@@ -220,3 +220,27 @@ table tr:first-child th{
 .termin-toggle-hidden{
 	opacity: 0 !important;
 }
+
+#terminator .start{
+	position: absolute;
+	bottom: 10px;
+	right: 44px;
+	width: 23px;
+	height: 23px;
+	background: url('../img/start.png');
+	background-size: 23px;
+	-webkit-filter: invert(100%);
+	cursor: pointer;
+}
+
+#terminator .stop{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	width: 24px;
+	height: 24px;
+	background: url('../img/stop.png');
+	background-size: 24px;
+	-webkit-filter: invert(100%);
+	cursor: pointer;
+}

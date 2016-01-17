@@ -25,19 +25,39 @@ def get_cstr(s):
         s = s.decode('ascii')
         return s[:s.find('\x00')]
 
-def trace_elf(cmd):
+def get_trace_str():
+    with open('out','rt') as f:
+        t = f.read().split('\n')
+        t = filter(lambda x:x!='',t)
+        t = list(map(lambda x:x.split(' '),t))
         arr = []
-        os.system(cmd)
-        with open('out') as f:
-            t = f.read().split('\n')
-            t = filter(lambda x:x!='',t)
-            t = list(map(lambda x:x.split(' '),t))
-            for i in t:
-                    if i[0][0] == '#':
-                            arr.append({'name':i[0][1:],'args':' '.join(i[1:]),'class':'danger'})
-                    else:
-                            arr.append({'name':i[0],'args':' '.join(i[1:]),'class':''})
-            return arr
+        for i in t:
+                if i[0][0] == '#':
+                        arr.append({'name':i[0][1:],'args':' '.join(i[1:]),'class':'danger'})
+                else:
+                        arr.append({'name':i[0],'args':' '.join(i[1:]),'class':''})
+        return arr
+
+def trace_elf(cmd):
+    os.system(cmd)
+    return get_trace_str()
+
+def kill_tracer():
+    p32 = os.popen('ps --no-header -C tracer32 -o pid').read()
+    if p32 != '':
+        os.system('kill -s 14 '+p32)
+        return
+    p64 = os.popen('ps --no-header -C tracer64 -o pid').read()
+    if p64 != '':
+        os.system('kill -s 14 '+p64)
+
+def rm(path):
+    if os.path.isfile(path):
+        os.remove(path)
+
+def get_out():
+    with open('subout','rb') as f:
+        return f.readlines()
 
 def elf(tmpf):
         f = open(tmpf, 'rb')
@@ -221,8 +241,8 @@ def elf(tmpf):
 
                 header['sh'].append(dtemp)
         
-        cmd = ' '.join(['.'+cwd+'tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
-        header['pss'] = trace_elf(cmd)
+        #cmd = ' '.join(['.'+cwd+'tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
+        #header['pss'] = trace_elf(cmd)
 
         return header
 
@@ -240,4 +260,3 @@ def print_var(var):
 
 if __name__ == '__main__':
         print_var(elf('tracer/test32')['pss'])
-        os.system("scrot")
