@@ -1,6 +1,12 @@
+var running = false;
+
 $('.input-text').keydown(function(e){
 	s = $(this);
 	if( e.which == 13){
+		if(running == false){
+			alert("not running");
+			return;
+		}
 		$.post("/input",
 		{
 			data:s.children('input').val()
@@ -11,8 +17,6 @@ $('.input-text').keydown(function(e){
 			var inputLast = $(".input-text input").length - 1;
 			$(".input-text input")[inputLast].focus();
 		});
-	}else if( e.ctrlKey && e.which == 67){
-		console.log('exit');
 	}
 });
 
@@ -32,3 +36,30 @@ $('#tab4').click(function(e){
 $('#terminator').click(function(e){
 	e.stopPropagation();
 });
+
+$('#state').click(function(){
+	t = this;
+	if(t.className == 'start'){
+		$.get("/start",{},
+		function(data,status){
+			//setTimeout("getout()",500);
+		});
+		t.className = 'stop';
+	}else{
+		$.get("/stop",{},
+		function(data,status){
+			t.className = 'start';
+		});
+	}
+});
+
+function getout(){
+	$.get("/running",{},
+	function(data,status){
+		if(data.substring(0,3) == 'not'){
+			$('#state')[0].className = 'start';
+		}else{
+			setTimeout("getout()",500);
+		}
+	});
+}

@@ -68,27 +68,27 @@ def input_POST():
 
     elf.kill_tracer()
     flush_outlines()
-    #retrace
+    elf.trace_elf(get_cmd())
 
-    #return multi outputs
-    return str(session['outlines'])
+    return ''
 
 @app.route('/start', methods=['GET'])
 def start_GET():
-    elf.trace_elf(get_cmd())
-    return ''
+    pid = os.fork()
+    if pid == 0:
+        f = os.popen('./tracer/tracer32 tmp 0 0').read()
+        print(f)
+    else:
+        return ''
 
 @app.route('/stop', methods=['GET'])
 def stop_GET():
     elf.kill_tracer()
-    return elf.get_out()
+    return ''
 
 @app.route('/running', methods=['GET'])
 def running_GET():
-    l = os.popen('ps -a|egrep "tracer\d{2}"').readlines()
-    if len(l) > 0:
-        return True
-    return False
+    return elf.get_trace_str()
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
