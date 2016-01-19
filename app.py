@@ -19,7 +19,7 @@ def flush_outlines():
         session['outlines'].append(len(f.readlines()))
 
 def get_cmd():
-    return ' '.join([cwd+'tracer/tracer'+session['class'],'tmp',session['ro_addr'],session['ro_size'],])
+    return ' '.join([cwd+'tracer/tracer'+session['class'],session['ro_addr'],session['ro_size'],'tmp'])
 
 @app.route('/', methods=['GET'])
 def home():

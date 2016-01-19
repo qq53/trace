@@ -24,11 +24,6 @@ void handler(int a){
 	kill(child, SIGKILL);
 }
 
-void handler1(int a){
-	fflush(NULL);
-	printf("123");
-}
-
 int main(int argc, char *argv[])
 {
     long call_num;
@@ -36,21 +31,20 @@ int main(int argc, char *argv[])
     int insyscall = 0;
 	int count = 0;
 	char **args;
-	int fout,fin,fout1;
+	int fout,fin;
 
 	if(argc < 4){
-		printf("Usage: tracer xx rodata_addr rodata_size\n");
+		printf("Usage: tracer rodata_addr rodata_size xx ...\n");
 		return 0;
 	}
 
-	rodata_addr_start = atoi(argv[2]);
-	rodata_size = atoi(argv[3]);
+	rodata_addr_start = atoi(argv[1]);
+	rodata_size = atoi(argv[2]);
 	rodata_addr_end = rodata_size + rodata_addr_start;
 
 	init_call();
 
     child = fork();
-	setbuf(stdout,NULL);
     if (child == 0) {
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
 		if(argc <= 4)
@@ -61,16 +55,13 @@ int main(int argc, char *argv[])
 		fin = open("subin",O_CREAT | O_RDWR,0666);
 		dup2(fin,0);
 		close(fin);
-		fout1 = open("subout",O_CREAT | O_RDWR | O_TRUNC,0666);
-		//dup2(fout1,1);
-		close(fout1);
-		signal(SIGALRM,handler1);
-		execve(argv[1], args, NULL);
+		execve(argv[3], args, NULL);
     } else {
 		signal(SIGALRM,handler);
 		fout = open("out",O_CREAT | O_RDWR | O_TRUNC,0666);
 		dup2(fout,1);
 		close(fout);
+		setbuf(stdout, NULL);
 		while (1) {
 			wait(&status);
 			if(sub_killed)
@@ -93,7 +84,6 @@ int main(int argc, char *argv[])
 _skip_call:
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 		}
-		kill(child, SIGKILL);
     }
     return 0;
 }
