@@ -76,9 +76,9 @@ def input_POST():
 def start_GET():
     pid = os.fork()
     if pid == 0:
-        f = os.popen('./tracer/tracer32 tmp 0 0').read()
-        print(f)
+        f = os.system('./tmp')
     else:
+        elf.trace_elf(get_cmd())
         return ''
 
 @app.route('/stop', methods=['GET'])
@@ -88,7 +88,7 @@ def stop_GET():
 
 @app.route('/running', methods=['GET'])
 def running_GET():
-    return elf.get_trace_str()
+    return elf.get_out()
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)

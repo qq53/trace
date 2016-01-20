@@ -40,7 +40,7 @@ $('#terminator').click(function(e){
 $('#state').click(function(){
 	t = this;
 	if(t.className == 'start'){
-		$.get("/start",{},
+		$.get("http://"+location.hostname+":81/start",{},
 		function(data,status){
 			//setTimeout("getout()",500);
 		});

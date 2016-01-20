@@ -45,11 +45,11 @@ def trace_elf(cmd):
 def kill_tracer():
     p32 = os.popen('ps --no-header -C tracer32 -o pid').read()
     if p32 != '':
-        os.system('kill -s 14 '+p32)
-        return
+        os.system('kill -s 14 '+p32)   
     p64 = os.popen('ps --no-header -C tracer64 -o pid').read()
     if p64 != '':
         os.system('kill -s 14 '+p64)
+    os.system('kill $(ps --no-header -C tmp -o pid)')
 
 def rm(path):
     if os.path.isfile(path):
