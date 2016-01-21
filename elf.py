@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# author: vap0r
-# github: github.com/qq53
-
 import struct
 import os
 
@@ -54,10 +50,6 @@ def kill_by_comm(comm,signal=None):
 def rm(path):
     if os.path.isfile(path):
         os.remove(path)
-
-def get_out():
-    with open('subout','rb') as f:
-        return f.readlines()
 
 def elf(tmpf):
         f = open(tmpf, 'rb')

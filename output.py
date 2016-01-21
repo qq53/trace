@@ -1,9 +1,6 @@
 from flask import Flask, request, session
 import os
-from jinja2 import Environment, FileSystemLoader
 import elf
-import codecs
-import stat
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -11,7 +8,21 @@ env = Environment(loader = FileSystemLoader(cwd+'templates'))
 
 @app.route('/start', methods=['GET'])
 def start_GET():
-    return '11'
+    os.system('./redirect_in/in ./tmp')
+    return ''
+
+@app.route('/stop', methods=['GET'])
+def stop_GET():
+    elf.kill_by_comm('in')
+    return ''
+
+def get_out():
+    with open('subout','r') as f:
+        return f.readlines()
+
+@app.route('/getout', methods=['GET'])
+def getout_GET():
+    return get_out()
 
 @app.after_request
 def after_request(response):
