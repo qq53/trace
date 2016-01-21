@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# author: vap0r
-# github: github.com/qq53
-
 from flask import Flask
 import os
 
@@ -17,5 +12,12 @@ def home_POST():
 
     return '<script>window.location.port=80</script>'
 	
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST')
+    return response
+
 if __name__ == '__main__':
-	app.run(port=90,host='0.0.0.0')
+    app.run(port=90,host='0.0.0.0')

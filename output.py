@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# author: vap0r
-# github: github.com/qq53
-
 from flask import Flask, request, session
 import os
 from jinja2 import Environment, FileSystemLoader

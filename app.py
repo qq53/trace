@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# author: vap0r
-# github: github.com/qq53
-
 from flask import Flask, request, session
 import os
 from jinja2 import Environment, FileSystemLoader
@@ -66,7 +61,8 @@ def input_POST():
     with open('subin','a') as f:
         f.write(request.form['data']+'\n')
 
-    elf.kill_tracer()
+    elf.kill_tracer('tracer32', 14)
+    elf.kill_tracer('tracer64', 14)
     flush_outlines()
     elf.trace_elf(get_cmd())
 
@@ -74,16 +70,13 @@ def input_POST():
 
 @app.route('/start', methods=['GET'])
 def start_GET():
-    pid = os.fork()
-    if pid == 0:
-        f = os.system('./tmp')
-    else:
-        elf.trace_elf(get_cmd())
-        return ''
+    elf.trace_elf(get_cmd())
+    return ''
 
 @app.route('/stop', methods=['GET'])
 def stop_GET():
-    elf.kill_tracer()
+    elf.kill_tracer('tracer32', 14)
+    elf.kill_tracer('tracer64', 14)
     return ''
 
 @app.route('/running', methods=['GET'])
