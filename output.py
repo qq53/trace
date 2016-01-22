@@ -17,7 +17,7 @@ def stop_GET():
     return ''
 
 def get_out():
-    with open('subout','r') as f:
+    with open('subout','rb') as f:
         return f.readlines()
 
 @app.route('/getout', methods=['GET'])

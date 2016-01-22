@@ -61,9 +61,8 @@ def input_POST():
     with open('subin','a') as f:
         f.write(request.form['data']+'\n')
 
-    elf.kill_tracer('tracer32', 14)
-    elf.kill_tracer('tracer64', 14)
-    flush_outlines()
+    elf.kill_by_comm('tracer32', 14)
+    elf.kill_by_comm('tracer64', 14)
     elf.trace_elf(get_cmd())
 
     return ''
@@ -75,13 +74,17 @@ def start_GET():
 
 @app.route('/stop', methods=['GET'])
 def stop_GET():
-    elf.kill_tracer('tracer32', 14)
-    elf.kill_tracer('tracer64', 14)
+    elf.kill_by_comm('tracer32', 14)
+    elf.kill_by_comm('tracer64', 14)
     return ''
 
-@app.route('/running', methods=['GET'])
+def get_out():
+    with open('out','rb') as f:
+        return f.readlines()
+
+@app.route('/getout', methods=['GET'])
 def running_GET():
-    return elf.get_out()
+    return get_out()
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
