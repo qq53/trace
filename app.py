@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask, request, session
 import os
 from jinja2 import Environment, FileSystemLoader
@@ -8,13 +10,6 @@ import stat
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
 env = Environment(loader = FileSystemLoader(cwd+'templates'))
-
-def flush_outlines():
-    with open('subout','rb') as f:
-        session['outlines'].append(len(f.readlines()))
-
-def get_cmd():
-    return ' '.join([cwd+'tracer/tracer'+session['class'],session['ro_addr'],session['ro_size'],'tmp'])
 
 @app.route('/', methods=['GET'])
 def home():
@@ -53,37 +48,47 @@ def home_POST():
 def inf_POST():
     return request.form['data']
 
-@app.route('/input', methods=['POST'])
-def input_POST():
-    d = request.form['data']
-    if d == '':
-        return ''
-    with open('subin','a') as f:
-        f.write(request.form['data']+'\n')
-
-    elf.kill_by_comm('tracer32', 14)
-    elf.kill_by_comm('tracer64', 14)
-    elf.trace_elf(get_cmd())
-
-    return ''
+def get_cmd():
+    return ' '.join([cwd+'tracer/tracer'+session['class'],session['ro_addr'],session['ro_size'],'tmp'])
 
 @app.route('/start', methods=['GET'])
 def start_GET():
-    elf.trace_elf(get_cmd())
-    return ''
+    pid = os.fork()
+    if pid == 0:
+        elf.trace_elf(get_cmd())
+    else:
+        return ''
+
+def kill_task():
+    elf.kill_by_comm('tracer32', 14)
+    elf.kill_by_comm('tracer64', 14)
+
+@app.route('/input', methods=['POST'])
+def input_GET():
+    d = request.form['data']
+    with open('subin','ab') as f:
+        f.write(d)
+
+    kill_task()
+    pid = os.fork()
+    if pid == 0:
+        elf.trace_elf(get_cmd())
+    else:
+        return ''
 
 @app.route('/stop', methods=['GET'])
 def stop_GET():
-    elf.kill_by_comm('tracer32', 14)
-    elf.kill_by_comm('tracer64', 14)
+    kill_task()
     return ''
 
 def get_out():
+    result = ''
     with open('out','rb') as f:
-        return f.readlines()
+        result = f.read()
+    return result
 
 @app.route('/getout', methods=['GET'])
-def running_GET():
+def getout_GET():
     return get_out()
 
 if __name__ == '__main__':

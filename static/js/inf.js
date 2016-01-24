@@ -1,13 +1,11 @@
-var running = false;
-
 $('.input-text').keydown(function(e){
 	s = $(this);
 	if( e.which == 13){
-		if(running == false){
-			alert("not running");
+		if($('#state')[0].className == 'stop'){
+			alert("running");
 			return;
 		}
-		$.post("/input",
+		$.post("http://"+location.hostname+":81/input",
 		{
 			data:s.children('input').val()
 		},
@@ -16,6 +14,7 @@ $('.input-text').keydown(function(e){
 			s.append('<div class="input-text"><input></input></div>');
 			var inputLast = $(".input-text input").length - 1;
 			$(".input-text input")[inputLast].focus();
+			$('#state')[0].className = 'stop';
 		});
 	}
 });
@@ -40,26 +39,44 @@ $('#terminator').click(function(e){
 $('#state').click(function(){
 	t = this;
 	if(t.className == 'start'){
+		$.get("http://"+location.hostname+":80/start",{},
+		function(data,status){
+			//setTimeout("get_trace_out()",500);
+		});
 		$.get("http://"+location.hostname+":81/start",{},
 		function(data,status){
-			//setTimeout("getout()",500);
+			//setTimeout("get_out()",500);
 		});
 		t.className = 'stop';
 	}else{
-		$.get("/stop",{},
+		$.get("http://"+location.hostname+":80/stop",{},
 		function(data,status){
-			t.className = 'start';
 		});
+		$.get("http://"+location.hostname+":81/stop",{},
+		function(data,status){
+		});
+		t.className = 'start';
 	}
 });
 
-function getout(){
-	$.get("/running",{},
+function get_trace_out(){
+	$.get("http://"+location.hostname+":80/getout",{},
 	function(data,status){
-		if(data.substring(0,3) == 'not'){
+		if(data == ''){
 			$('#state')[0].className = 'start';
 		}else{
-			setTimeout("getout()",500);
+			setTimeout("get_trace_out()",500);
+		}
+	});
+}
+
+function get_out(){
+	$.get("http://"+location.hostname+":81/getout",{},
+	function(data,status){
+		if(data == ''){
+			$('#state')[0].className = 'start';
+		}else{
+			setTimeout("get_out()",500);
 		}
 	});
 }

@@ -1,24 +1,47 @@
+#!/usr/bin/env python3
+
 from flask import Flask, request, session
 import os
 import elf
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
-env = Environment(loader = FileSystemLoader(cwd+'templates'))
 
 @app.route('/start', methods=['GET'])
 def start_GET():
-    os.system('./redirect_in/in ./tmp')
-    return ''
+    pid = os.fork()
+    if pid == 0:
+        os.system('./redirect_in/in tmp')
+    else:
+        return ''
+
+def kill_task():
+    elf.kill_by_comm('in')
+    elf.kill_by_comm('tmp')
 
 @app.route('/stop', methods=['GET'])
 def stop_GET():
-    elf.kill_by_comm('in')
+    kill_task()
     return ''
 
+@app.route('/input', methods=['POST'])
+def input_POST():
+    d = request.form['data']
+    with open('subin','a') as f:
+        f.write(d)    
+        
+    kill_task()
+    pid = os.fork()
+    if pid == 0:
+        os.system('./redirect_in/in tmp')
+    else:
+        return ''
+
 def get_out():
+    result = ''
     with open('subout','rb') as f:
-        return f.readlines()
+        result = f.read()
+    return result
 
 @app.route('/getout', methods=['GET'])
 def getout_GET():

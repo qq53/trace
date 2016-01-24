@@ -38,9 +38,13 @@ def trace_elf(cmd):
     os.system(cmd)
     return get_trace_str()
 
-def kill_by_comm(comm,signal=None):
+def get_pid_by_comm(comm):
     cmd = 'ps --no-header -C '+comm+' -o pid'
     p = os.popen(cmd).read()
+    return p
+
+def kill_by_comm(comm,signal=None):
+    p = get_pid_by_comm(comm)
     if p != '':
         if signal == None:
             os.system('kill '+p)
@@ -233,9 +237,6 @@ def elf(tmpf):
 
                 header['sh'].append(dtemp)
         
-        #cmd = ' '.join(['.'+cwd+'tracer/tracer'+header['class'],tmpf,rodata_addr,rodata_size])
-        #header['pss'] = trace_elf(cmd)
-
         return header
 
 def print_var(var):
