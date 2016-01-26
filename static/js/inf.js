@@ -42,10 +42,12 @@ $('#state').click(function(){
 		$.get("http://"+location.hostname+":80/start",{},
 		function(data,status){
 			//setTimeout("get_trace_out()",500);
+			console.log(data)
 		});
 		$.get("http://"+location.hostname+":81/start",{},
 		function(data,status){
 			//setTimeout("get_out()",500);
+			console.log(data)
 		});
 		t.className = 'stop';
 	}else{
