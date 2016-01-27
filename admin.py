@@ -4,7 +4,7 @@ from flask import Flask
 import os
 
 app = Flask(__name__)
-img = 'debian06'
+img = 'debian07'
 
 @app.route('/', methods=['GET'])
 def home_POST():

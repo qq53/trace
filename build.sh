@@ -28,5 +28,10 @@ case $1 in
 	./make.sh clean
 	cd ../tracer
 	./make.sh clean
+	cd ..
+	rm subin
+	rm subout
+	rm out
+	rm tmp
 	;;
 esac

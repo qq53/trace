@@ -3,9 +3,20 @@
 from flask import Flask, request, session
 import os
 import elf
+import stat
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
+
+@app.route('/', methods=['POST'])
+def home_POST():
+    f = request.files['fileToUpload']
+    sf = cwd+'tmp'
+
+    f.save(sf)
+    os.chmod(sf,stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+
+    return ''
 
 @app.route('/start', methods=['GET'])
 def start_GET():
