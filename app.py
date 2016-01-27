@@ -17,6 +17,16 @@ def home():
         d = f.read()
         return d
 
+def get_api_name(p):
+    with open(p,'rt') as f:
+         s = f.readlines()
+    l = []
+    for i in s:
+        p1 = i.find('"')+1
+        p2 = i.find('"',p1)
+        l.append(i[p1:p2])
+    return l
+
 @app.route('/', methods=['POST'])
 def home_POST():
     f = request.files['fileToUpload']
@@ -41,8 +51,10 @@ def home_POST():
     session['class'] = result['class']
     session['ro_addr'] = result['ro_addr']
     session['ro_size'] = result['ro_size']
+    api32 = get_api_name(cwd+'tracer/call_name_32.h')
+    api64 = get_api_name(cwd+'tracer/call_name_64.h')
 
-    return template.render(header=result,sections=ss,programs=ps)
+    return template.render(header=result,sections=ss,programs=ps,apis32=api32,apis64=api64)
 
 @app.route('/inf', methods=['POST'])
 def inf_POST():
@@ -90,7 +102,7 @@ def get_out():
 @app.route('/getout', methods=['GET'])
 def getout_GET():
     return get_out()
-
+            
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
     app.run(port=80,host='0.0.0.0')
