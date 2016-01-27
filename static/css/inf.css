@@ -157,7 +157,7 @@ table tr:first-child th{
 #tab2 .container{z-index:1;}
 #tab3 .container{z-index:2;}
 #tab4 .container{z-index:3;}
-#tab5 .container{z-index:4;}
+#tab5 .container{z-index:4; display:flex;}
 
 #footer{
 	z-index: 6;
@@ -242,3 +242,25 @@ table tr:first-child th{
 	transform: rotate(360deg);
 }
 
+.half{
+	width: 50%;
+	padding: 8px;
+}
+
+.container .left{
+	border-right: 1px solid #b0bec5;
+}
+
+.container input{
+	zoom: 130%;
+}
+
+.container label{
+	margin-top: -1px;
+	margin-left: 4px;
+	position: absolute;
+}
+
+.container .bits{
+	border-bottom: 1px solid #eceff1;
+}

@@ -152,6 +152,22 @@
 				<div class="title-des sub-text">设置要跟踪的函数及参数</div>
 			</div>
 			<div class="container">
+				<div class="half left">
+					<h1 class="bits">32</h1>
+					<ul>
+						{% for api in apis32 %}
+							<li><input type="checkbox" value="{{ api }}"><label>{{ api }}</label></li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="half">
+					<h1 class="bits">64</h1>
+					<ul>
+						{% for api in apis64 %}
+							<li><input type="checkbox" value="{{ api }}"><label>{{ api }}</label></li>
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
 			{% include "footer.html" %}
 		</div>
