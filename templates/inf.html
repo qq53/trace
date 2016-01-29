@@ -152,21 +152,43 @@
 				<div class="title-des sub-text">设置要跟踪的函数及参数</div>
 			</div>
 			<div class="container">
-				<div class="half left">
-					<h1 class="bits">32</h1>
-					<ul>
-						{% for api in apis32 %}
+				<div class="container-title">已监控函数</div>
+				<div class="clearfix apis">
+					<div class="half left">
+						<div class="bits">32</div>
+						<ul>
+							{% for api in apis32e %}
 							<li><input type="checkbox" value="{{ api }}"><label>{{ api }}</label></li>
-						{% endfor %}
-					</ul>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="half right">
+						<div class="bits">64</div>
+						<ul>
+							{% for api in apis64e %}
+							<li><input type="checkbox" value="{{ api }}"><label>{{ api }}</label></li>
+							{% endfor %}
+						</ul>
+					</div>
 				</div>
-				<div class="half">
-					<h1 class="bits">64</h1>
-					<ul>
-						{% for api in apis64 %}
+				<div class="container-title">未监控函数</div>
+				<div class="clearfix apis">
+					<div class="half left">
+						<div class="bits">32</div>
+						<ul>
+							{% for api in apis32n %}
 							<li><input type="checkbox" value="{{ api }}"><label>{{ api }}</label></li>
-						{% endfor %}
-					</ul>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="half right">
+						<div class="bits">64</div>
+						<ul>
+							{% for api in apis64n %}
+							<li><input type="checkbox" value="{{ api }}"><label>{{ api }}</label></li>
+							{% endfor %}
+						</ul>
+					</div>
 				</div>
 			</div>
 			{% include "footer.html" %}

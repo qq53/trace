@@ -157,7 +157,7 @@ table tr:first-child th{
 #tab2 .container{z-index:1;}
 #tab3 .container{z-index:2;}
 #tab4 .container{z-index:3;}
-#tab5 .container{z-index:4; display:flex;}
+#tab5 .container{z-index:4; padding-bottom: 24px;}
 
 #footer{
 	z-index: 6;
@@ -244,11 +244,15 @@ table tr:first-child th{
 
 .half{
 	width: 50%;
-	padding: 8px;
+	padding: 8px 8px 0 8px;
 }
 
 .container .left{
-	border-right: 1px solid #b0bec5;
+	float: left;
+}
+
+.container .right{
+	float: right;
 }
 
 .container input{
@@ -263,4 +267,15 @@ table tr:first-child th{
 
 .container .bits{
 	border-bottom: 1px solid #eceff1;
+	font-size: 1.2rem;
+}
+
+.container-title{
+	padding: 8px 0 0 6px;
+	font-size: 1.5rem;
+	margin-bottom: -16px;
+}
+
+.container .apis{
+	margin-bottom: 24px;
 }
