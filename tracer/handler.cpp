@@ -14,7 +14,7 @@ void def(int n){
 		printf("%s %x = %x\n", syscall_name[n], GET_ARGS(1), reg0);
 }
 
-void bind64(int n){
+void bind_64(int n){
 	BITS_TYPE p,port,addr;
 	p = GET_ARGS(2);
 	port = ntohs(ptrace(PTRACE_PEEKTEXT, child, p)>>16);
@@ -23,7 +23,7 @@ void bind64(int n){
 		addr&0xff000000,addr&0xff0000,addr&0xff00,addr&0xff);
 }
 
-void socketcall(int n){
+void socketcall_32(int n){
 	BITS_TYPE p,port,addr;
 
 	switch(GET_ARGS(1)){
@@ -41,7 +41,7 @@ void socketcall(int n){
 	}
 }
 
-void open(int n){
+void open_32_64(int n){
 	struct stat sbuf;
 	const char *file = check_str(GET_ARGS(1));
 	stat(file, &sbuf);
