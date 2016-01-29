@@ -6,6 +6,7 @@ from jinja2 import Environment, FileSystemLoader
 import elf
 import codecs
 import stat
+import config
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -16,16 +17,6 @@ def home():
     with codecs.open(cwd+'index.html','r','utf-8') as f:
         d = f.read()
         return d
-
-def get_api_name(p):
-    with open(p,'rt') as f:
-         s = f.readlines()
-    l = []
-    for i in s:
-        p1 = i.find('"')+1
-        p2 = i.find('"',p1)
-        l.append(i[p1:p2])
-    return l
 
 @app.route('/', methods=['POST'])
 def home_POST():
@@ -51,10 +42,21 @@ def home_POST():
     session['class'] = result['class']
     session['ro_addr'] = result['ro_addr']
     session['ro_size'] = result['ro_size']
-    api32 = get_api_name(cwd+'tracer/call_name_32.h')
-    api64 = get_api_name(cwd+'tracer/call_name_64.h')
 
-    return template.render(header=result,sections=ss,programs=ps,apis32=api32,apis64=api64)
+    funcs = config.get_funcs()
+    api32e = funcs['32']
+    api32n = config.get_api_name(32)
+    for i in api32n:
+        if i in api32e:
+            api32n.remove(i)
+
+    api64e = funcs['64']
+    api64n = config.get_api_name(64)
+    for i in api64n:
+        if i in api64e:
+            api64n.remove(i)
+
+    return template.render(header=result,sections=ss,programs=ps,apis32e=api32e,apis64e=api64e,apis32n=api32n,apis64n=api64n)
 
 @app.route('/inf', methods=['POST'])
 def inf_POST():

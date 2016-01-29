@@ -260,9 +260,7 @@ table tr:first-child th{
 }
 
 .container label{
-	margin-top: -1px;
-	margin-left: 4px;
-	position: absolute;
+	margin: 0 0 0 4px;
 }
 
 .container .bits{
@@ -278,4 +276,13 @@ table tr:first-child th{
 
 .container .apis{
 	margin-bottom: 24px;
+}
+
+.container ul{
+	margin-top: 8px;
+}
+
+.container input[type="checkbox"]{
+	margin: 0;
+	vertical-align: middle;
 }
