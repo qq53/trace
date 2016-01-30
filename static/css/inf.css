@@ -286,3 +286,32 @@ table tr:first-child th{
 	margin: 0;
 	vertical-align: middle;
 }
+
+.container .args{
+	list-style-type: decimal-leading-zero;
+}
+
+.container .arg{
+	margin-left: 12px;
+	opacity: 0.87;
+}
+
+.container .arglist{
+	padding-left: 50px;
+	margin-bottom: 8px;
+}
+
+.container .args .format{
+	height: 17px;
+	font-size: 0.7rem;
+	vertical-align: baseline;
+}
+
+.container select{
+	vertical-align: baseline;
+}
+
+.container .arglist .btn{
+	zoom: 10%;
+	margin-top: 40px;
+}

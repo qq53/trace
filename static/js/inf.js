@@ -82,3 +82,54 @@ function get_out(){
 		}
 	});
 }
+
+function bind_select(){
+	$('.container .arg-lens').change(function(){
+		var l = Math.floor(this.value);
+		var len = $(this).next('.arglist').children('.args').children().length;
+		
+		//add
+		for(var i = len; i < l; ++i)
+			$(this).next('.arglist').children('.args').append('\
+				<li>\
+					<input class="format" type="text" placeholder="输出格式: %d"/>\
+					<select>\
+						<option select="selected">处理函数</option>\
+						<option value="htol">htol</option>\
+					</select>\
+				</li>\
+			');
+		//remove
+		for(var i = len-1; i >= l; --i)
+			$(this).next('.arglist').children('.args').children(':eq('+i+')').remove();
+	});
+}
+
+$('.container [type=checkbox]').click(function(){
+	if (this.checked){
+		if ( $(this).nextAll('.arg').length == 0 ){
+			$(this).next('label').after('\
+				<label class="arg">参数个数</label>\
+				<select class="arg-lens">\
+					<option value="0" select="selected">-</option>\
+					<option value="1" >1</option>\
+					<option value="2" >2</option>\
+				</select>\
+				<div class="arglist">\
+					<ul class="args">\
+					</ul>\
+					<button type="button" class="btn am-btn am-btn-default">确定</button>\
+				</div>\
+			');
+			bind_select();
+		}else{
+			var len = $(this).nextAll().length;
+			for( var i = 1; i < len; ++i)
+				$($(this).nextAll()[i]).show();
+		}
+	}else{
+		var len = $(this).nextAll().length;
+		for( var i = 1; i < len; ++i)
+			$($(this).nextAll()[i]).hide();
+	}
+});
