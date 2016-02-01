@@ -109,6 +109,7 @@ $('.container [type=checkbox]').click(function(){
 	if (this.checked){
 		if ( $(this).nextAll('.arg').length == 0 ){
 			$(this).next('label').after('\
+				<br />\
 				<label class="arg">参数个数</label>\
 				<select class="arg-lens">\
 					<option value="0" select="selected">-</option>\
@@ -118,7 +119,11 @@ $('.container [type=checkbox]').click(function(){
 				<div class="arglist">\
 					<ul class="args">\
 					</ul>\
-					<button type="button" class="btn am-btn am-btn-default">确定</button>\
+					<button type="button" class="confirm-btn btn am-btn am-btn-default">确定</button>\
+				</div>\
+				<label class="arg">条件跟踪</label><input type="checkbox" value="cond" id="cond-check"><button type="button" class="btn am-btn am-btn-default" id="cond-add">添加</button>\
+				<div class="cond-list">\
+					<button type="button" class="btn am-btn am-btn-default" id="cond-confirm">确定</button>\
 				</div>\
 			');
 			bind_select();

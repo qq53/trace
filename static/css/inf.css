@@ -279,7 +279,7 @@ table tr:first-child th{
 }
 
 .container ul{
-	margin-top: 8px;
+	margin-top: 4px;
 }
 
 .container input[type="checkbox"]{
@@ -292,7 +292,7 @@ table tr:first-child th{
 }
 
 .container .arg{
-	margin-left: 12px;
+	margin: 4px 0 0 12px;
 	opacity: 0.87;
 }
 
@@ -311,7 +311,23 @@ table tr:first-child th{
 	vertical-align: baseline;
 }
 
-.container .arglist .btn{
-	zoom: 10%;
+.container .arglist .confirm-btn{
 	margin-top: 40px;
+}
+
+.container .btn{
+	zoom: 10%;
+}
+
+.container .cond-list{
+	padding-left: 50px;
+	margin-bottom: 8px;
+}
+
+.container #cond-check{
+	margin-left: 4px;
+}
+
+.container #cond-add{
+	margin-left: 24px;
 }
