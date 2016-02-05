@@ -83,14 +83,14 @@ function get_out(){
 	});
 }
 
-function bind_select(){
+function bind_arglens_select(){
 	$('.container .arg-lens').change(function(){
-		var l = Math.floor(this.value);
-		var len = $(this).next('.arglist').children('.args').children().length;
+		var l = this.value;
+		var len = $(this).parent().find('.arg-list ul li').length;
 		
-		//add
-		for(var i = len; i < l; ++i)
-			$(this).next('.arglist').children('.args').append('\
+		if ( len < l )
+			//add
+			$(this).parent().find('.arg-list ul').append('\
 				<li>\
 					<input class="format" type="text" placeholder="输出格式: %d"/>\
 					<select>\
@@ -98,43 +98,96 @@ function bind_select(){
 						<option value="htol">htol</option>\
 					</select>\
 				</li>\
-			');
-		//remove
-		for(var i = len-1; i >= l; --i)
-			$(this).next('.arglist').children('.args').children(':eq('+i+')').remove();
+			'.repeat(l-len));
+		else{
+			//remove
+			if ( l == 0)
+				$(this).parent().find('.arg-list ul li').remove();
+			else
+				$(this).parent().find('.arg-list ul li:gt('+(l-1)+')').remove();
+		}
 	});
 }
 
-$('.container [type=checkbox]').click(function(){
+function bind_condcheck(){
+	$('.container .settings .cond-check').click(function(){
+		if (this.checked){
+			$(this).nextAll('#cond-add,.cond-list').show();
+		}else{
+			$(this).nextAll('#cond-add,.cond-list').hide();
+		}
+	});
+}
+
+$('.container .arg-check').click(function(){
 	if (this.checked){
-		if ( $(this).nextAll('.arg').length == 0 ){
+		if ( $(this).nextAll('.settings') ){
 			$(this).next('label').after('\
-				<br />\
-				<label class="arg">参数个数</label>\
-				<select class="arg-lens">\
-					<option value="0" select="selected">-</option>\
-					<option value="1" >1</option>\
-					<option value="2" >2</option>\
-				</select>\
-				<div class="arglist">\
-					<ul class="args">\
+				<div class="settings">\
+					<label class="arg-label arg-label-len second">参数个数</label>\
+					<select class="arg-lens">\
+						<option value="0" select="selected">-</option>\
+						<option value="1" >1</option>\
+						<option value="2" >2</option>\
+					</select>\
+					<div class="arg-list">\
+						<ul>\
+						</ul>\
+					</div>\
+					<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" id="cond-check" class="cond-check">\
+					<ul class="cond-list">\
+						<li>\
+							<select>\
+								<option value="0" select="selected">-</option>\
+								<option value="1" >参数一</option>\
+								<option value="2" >参数二</option>\
+							</select>\
+							<input type="text" placeholder="例如: == >= <=" class="cond-list-assign" />\
+							<input class="cond-list-value" type="text" placeholder="数值或变量" />\
+						</li>\
 					</ul>\
-					<button type="button" class="confirm-btn btn am-btn am-btn-default">确定</button>\
-				</div>\
-				<label class="arg">条件跟踪</label><input type="checkbox" value="cond" id="cond-check"><button type="button" class="btn am-btn am-btn-default" id="cond-add">添加</button>\
-				<div class="cond-list">\
 					<button type="button" class="btn am-btn am-btn-default" id="cond-confirm">确定</button>\
 				</div>\
 			');
-			bind_select();
+			bind_arglens_select();
+			bind_condcheck();
+			bind_cond_var();
 		}else{
-			var len = $(this).nextAll().length;
-			for( var i = 1; i < len; ++i)
-				$($(this).nextAll()[i]).show();
+			if ( $(this).nextAll('.settings') )
+				$(this).nextAll('.settings').show();
 		}
 	}else{
-		var len = $(this).nextAll().length;
-		for( var i = 1; i < len; ++i)
-			$($(this).nextAll()[i]).hide();
+		if ( $(this).nextAll('.settings') )
+			$(this).nextAll('.settings').hide();
 	}
 });
+
+function bind_cond_var(){
+	function finish(s){
+		var p = s.parent();
+		var f = p.find('select').val()!=0 && p.find('.cond-list-assign').val()!='' && p.find('.cond-list-value').val()!= '';
+		if ( f ){
+			s.unbind();
+			p.find('.cond-list-assign').unbind();
+			p.find('.cond-list-value').unbind();
+			p.after('\
+				<li>\
+					<select>\
+						<option value="0" select="selected">-</option>\
+						<option value="1" >参数一</option>\
+						<option value="2" >参数二</option>\
+					</select>\
+					<input type="text" placeholder="例如: == >= <=" class="cond-list-assign" />\
+					<input class="cond-list-value" type="text" placeholder="数值或变量" />\
+				</li>\
+			');
+			var u = p.next();
+			u.find('select').blur(function(){finish($(this))});
+			u.find('.cond-list-assign').blur(function(){finish($(this))});
+			u.find('.cond-list-value').blur(function(){finish($(this))});
+		}
+	}
+	$('.cond-list li select').blur(function(){finish($(this))});
+	$('.cond-list-assign').blur(function(){finish($(this))});
+	$('.cond-list-value').blur(function(){finish($(this))});
+}

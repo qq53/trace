@@ -259,7 +259,7 @@ table tr:first-child th{
 	zoom: 130%;
 }
 
-.container label{
+.container .half ul li label{
 	margin: 0 0 0 4px;
 }
 
@@ -287,32 +287,35 @@ table tr:first-child th{
 	vertical-align: middle;
 }
 
-.container .args{
+.container .settings{
+	padding-left: 12px;
+}
+
+.container .settings .arg-label-len{
+	margin-top: 4px !important;
+}
+
+.container .arg-list, .cond-list{
+	padding-left: 50px;
+	margin-bottom: 4px;
+}
+
+.container .settings .arg-label-cond{
+	margin-top: 8px;
+}
+
+.container .settings li{
 	list-style-type: decimal-leading-zero;
 }
 
-.container .arg{
-	margin: 4px 0 0 12px;
-	opacity: 0.87;
-}
-
-.container .arglist{
-	padding-left: 50px;
-	margin-bottom: 8px;
-}
-
-.container .args .format{
+.container .settings .format{
 	height: 17px;
 	font-size: 0.7rem;
-	vertical-align: baseline;
+	vertical-align: bottom;
 }
 
 .container select{
-	vertical-align: baseline;
-}
-
-.container .arglist .confirm-btn{
-	margin-top: 40px;
+	vertical-align: bottom;
 }
 
 .container .btn{
@@ -330,4 +333,28 @@ table tr:first-child th{
 
 .container #cond-add{
 	margin-left: 24px;
+}
+
+.container .cond-add,.cond-list{
+	display: none;
+}
+
+.container .settings #cond-confirm{
+	display: block;
+	margin: 48px 0 48px 48px;
+}
+
+.settings .cond-list li input{
+	height: 17px;
+	vertical-align: bottom !important;
+    width: 40px;
+    font-size: 0.6rem;
+}
+
+.cond-list-value{
+	width: 54px !important;
+}
+
+.second{
+	opacity: 0.87;	
 }
