@@ -201,7 +201,7 @@ function bind_cond_var(){
 	$('.cond-list-value').blur(function(){finish($(this))});
 }
 
-var num32=5,num64=6;
+var num32,num64;
 
 $.get("http://"+location.hostname+":80/get_args_sum",{},
 function(data,status){
