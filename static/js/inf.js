@@ -192,10 +192,14 @@ function bind_cond_var(){
 	$('.cond-list-value').blur(function(){finish($(this))});
 }
 
+var num32,num64;
+
 $.get("http://"+location.hostname+":80/get_args_sum",{},
 function(data,status){
 	if(data == ''){
-		console.log(data);
 	}else{
+		var d = eval('('+data+')');
+		num32 = d['num32'];
+		num64 = d['num64'];
 	}
 });
