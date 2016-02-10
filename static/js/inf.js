@@ -119,16 +119,31 @@ function bind_condcheck(){
 	});
 }
 
+var afterStr;
+
 $('.container .arg-check').click(function(){
 	if (this.checked){
 		if ( $(this).nextAll('.settings') ){
-			$(this).next('label').after('\
+			//default the left is 32 bit
+			var num = num32;
+			if ( $(this).parents('.half')[0].className.search('right') > 0 )
+				num = num64;
+
+			var preStr = '\
 				<div class="settings">\
 					<label class="arg-label arg-label-len second">参数个数</label>\
 					<select class="arg-lens">\
-						<option value="0" select="selected">-</option>\
-						<option value="1" >1</option>\
-						<option value="2" >2</option>\
+						<option value="0" select="selected">-</option>';
+			for( var i = 1; i <= num; ++i )
+				preStr += '<option value="'+i+'" >'+i+'</option>';
+			
+			afterStr = '<select>\
+							<option value="0" select="selected">-</option>';
+			zhStr = '一二三四五六七八九';
+			for( var i = 1; i <= num; ++i )
+				afterStr += '<option value="'+i+'" >参数'+zhStr[i-1]+'</option>';			
+				
+			$(this).next('label').after(preStr+'\
 					</select>\
 					<div class="arg-list">\
 						<ul>\
@@ -136,11 +151,8 @@ $('.container .arg-check').click(function(){
 					</div>\
 					<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" id="cond-check" class="cond-check">\
 					<ul class="cond-list">\
-						<li>\
-							<select>\
-								<option value="0" select="selected">-</option>\
-								<option value="1" >参数一</option>\
-								<option value="2" >参数二</option>\
+						<li>'+
+						afterStr+'\
 							</select>\
 							<input type="text" placeholder="例如: == >= <=" class="cond-list-assign" />\
 							<input class="cond-list-value" type="text" placeholder="数值或变量" />\
@@ -172,10 +184,7 @@ function bind_cond_var(){
 			p.find('.cond-list-value').unbind();
 			p.after('\
 				<li>\
-					<select>\
-						<option value="0" select="selected">-</option>\
-						<option value="1" >参数一</option>\
-						<option value="2" >参数二</option>\
+					'+afterStr+'\
 					</select>\
 					<input type="text" placeholder="例如: == >= <=" class="cond-list-assign" />\
 					<input class="cond-list-value" type="text" placeholder="数值或变量" />\
@@ -192,7 +201,7 @@ function bind_cond_var(){
 	$('.cond-list-value').blur(function(){finish($(this))});
 }
 
-var num32,num64;
+var num32=5,num64=6;
 
 $.get("http://"+location.hostname+":80/get_args_sum",{},
 function(data,status){
