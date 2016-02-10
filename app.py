@@ -7,6 +7,7 @@ import elf
 import codecs
 import stat
 import config
+import json
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -104,7 +105,26 @@ def get_out():
 @app.route('/getout', methods=['GET'])
 def getout_GET():
     return get_out()
+
+def get_args_sum():
+    with open(cwd+'tracer/call.h','rt') as f:
+        d = f.readlines()
+    flag32 = False
+    for i in d:
+        if i.find('BIT32') >= 0:
+            flag32 = True
+        if i.find('MAX_ARGS_NUM') >= 0:
+            if flag32 == True:
+                num32 = i.split()[-1]
+                flag32 = False
+            else:
+                num64 = i.split()[-1]
+    return {'num32':num32,'num64':num64}
             
+@app.route('/get_args_sum', methods=['GET'])
+def get_args_sum_GET():
+    return json.dumps(get_args_sum())
+
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
     app.run(port=80,host='0.0.0.0')

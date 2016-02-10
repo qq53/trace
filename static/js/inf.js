@@ -191,3 +191,11 @@ function bind_cond_var(){
 	$('.cond-list-assign').blur(function(){finish($(this))});
 	$('.cond-list-value').blur(function(){finish($(this))});
 }
+
+$.get("http://"+location.hostname+":80/get_args_sum",{},
+function(data,status){
+	if(data == ''){
+		console.log(data);
+	}else{
+	}
+});
