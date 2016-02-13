@@ -94,7 +94,7 @@ function bind_arglens_select(){
 				<li>\
 					<input class="format" type="text" placeholder="输出格式: %d"/>\
 					<select>\
-						<option select="selected">处理函数</option>\
+						<option value="" select="selected">处理函数</option>\
 						<option value="htol">htol</option>\
 					</select>\
 				</li>\
@@ -130,7 +130,7 @@ function bind_confirm(){
 		for(var i = 0; i < arg_li.length; ++i){
 			data['args'].push({
 				'format': $(arg_li[i]).find('.format').val(),
-				'deal_func': $(arg_li[i]).find('select').val(),
+				'func': $(arg_li[i]).find('select').val(),
 			});
 		}
 		
@@ -138,7 +138,7 @@ function bind_confirm(){
 		if( par.find('.cond-check')[0].checked ){
 			var cond_li = par.find('.cond-list li');
 			
-			for(var i = 0; i < cond_li.length; ++i){
+			for(var i = 0; i < cond_li.length-1; ++i){
 				data['conds'].push({
 					'arg': $(cond_li[i]).find('select').val(),
 					'assign': $(cond_li[i]).find('.cond-list-assign').val(),
@@ -147,7 +147,18 @@ function bind_confirm(){
 			}
 		}
 		
-		console.log(JSON.stringify(data));
+		//POST DATA
+		$.post("http://"+location.hostname+":80/setting",{
+			'args': JSON.stringify(data['args']),
+			'conds': JSON.stringify(data['conds']),
+			'name': JSON.stringify(par.parent().children('label').text())
+		},
+		function(data,status){
+			if(data == ''){
+			}else{
+				console.log(data);
+			}
+		});
 		
 	});
 }
@@ -162,7 +173,7 @@ $('.container .arg-check').click(function(){
 
 			var preStr = '\
 				<div class="settings">\
-					<label class="arg-label arg-label-len second">参数个数</label>\
+					<label class="arg-label arg-label-len">参数个数</label>\
 					<select class="arg-lens">\
 						<option value="0" select="selected">-</option>';
 			for( var i = 1; i <= sum; ++i )

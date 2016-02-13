@@ -8,6 +8,7 @@ import codecs
 import stat
 import config
 import json
+import setting
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -124,6 +125,15 @@ def get_args_sum():
 @app.route('/get_args_sum', methods=['GET'])
 def get_args_sum_GET():
     return json.dumps(get_args_sum())
+
+@app.route('/setting', methods=['POST'])
+def setting_POST():
+    setting.set(key='1',
+        args = json.loads(request.form['args']),
+        conds = json.loads(request.form['conds']),
+        name = request.form['name']
+    )
+    return 'ok'
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)

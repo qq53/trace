@@ -33,5 +33,6 @@ case $1 in
 	rm subout
 	rm out
 	rm tmp
+	rm settings/*
 	;;
 esac
