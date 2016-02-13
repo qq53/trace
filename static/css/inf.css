@@ -331,15 +331,15 @@ table tr:first-child th{
 	margin-left: 4px;
 }
 
-.container #cond-add{
-	margin-left: 24px;
+.settings .cond-check{
+	margin-left: 4px !important;
 }
 
 .container .cond-add,.cond-list{
 	display: none;
 }
 
-.container .settings #cond-confirm{
+.container .settings .cond-confirm{
 	display: block;
 	margin: 48px 0 48px 48px;
 }

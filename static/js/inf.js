@@ -112,35 +112,66 @@ function bind_arglens_select(){
 function bind_condcheck(){
 	$('.container .settings .cond-check').click(function(){
 		if (this.checked){
-			$(this).nextAll('#cond-add,.cond-list').show();
+			$(this).nextAll('.cond-list').show();
 		}else{
-			$(this).nextAll('#cond-add,.cond-list').hide();
+			$(this).nextAll('.cond-list').hide();
 		}
 	});
 }
 
-var afterStr;
+function bind_confirm(){
+	$('.settings .cond-confirm').click(function(){
+		var par = $(this).parents('.settings');
+		var data = {};
+		
+		var arg_li = par.find('.arg-list ul li');
+		data['args'] = []
+		
+		for(var i = 0; i < arg_li.length; ++i){
+			data['args'].push({
+				'format': $(arg_li[i]).find('.format').val(),
+				'deal_func': $(arg_li[i]).find('select').val(),
+			});
+		}
+		
+		data['conds'] = []
+		if( par.find('.cond-check')[0].checked ){
+			var cond_li = par.find('.cond-list li');
+			
+			for(var i = 0; i < cond_li.length; ++i){
+				data['conds'].push({
+					'arg': $(cond_li[i]).find('select').val(),
+					'assign': $(cond_li[i]).find('.cond-list-assign').val(),
+					'value': $(cond_li[i]).find('.cond-list-value').val(),					
+				});
+			}
+		}
+		
+		console.log(JSON.stringify(data));
+		
+	});
+}
 
 $('.container .arg-check').click(function(){
 	if (this.checked){
 		if ( $(this).nextAll('.settings') ){
 			//default the left is 32 bit
-			var num = num32;
+			var sum = sum32;
 			if ( $(this).parents('.half')[0].className.search('right') > 0 )
-				num = num64;
+				sum = sum64;
 
 			var preStr = '\
 				<div class="settings">\
 					<label class="arg-label arg-label-len second">参数个数</label>\
 					<select class="arg-lens">\
 						<option value="0" select="selected">-</option>';
-			for( var i = 1; i <= num; ++i )
+			for( var i = 1; i <= sum; ++i )
 				preStr += '<option value="'+i+'" >'+i+'</option>';
 			
-			afterStr = '<select>\
+			var afterStr = '<select>\
 							<option value="0" select="selected">-</option>';
 			zhStr = '一二三四五六七八九';
-			for( var i = 1; i <= num; ++i )
+			for( var i = 1; i <= sum; ++i )
 				afterStr += '<option value="'+i+'" >参数'+zhStr[i-1]+'</option>';			
 				
 			$(this).next('label').after(preStr+'\
@@ -149,7 +180,7 @@ $('.container .arg-check').click(function(){
 						<ul>\
 						</ul>\
 					</div>\
-					<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" id="cond-check" class="cond-check">\
+					<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" class="cond-check">\
 					<ul class="cond-list">\
 						<li>'+
 						afterStr+'\
@@ -158,12 +189,13 @@ $('.container .arg-check').click(function(){
 							<input class="cond-list-value" type="text" placeholder="数值或变量" />\
 						</li>\
 					</ul>\
-					<button type="button" class="btn am-btn am-btn-default" id="cond-confirm">确定</button>\
+					<button type="button" class="btn am-btn am-btn-default cond-confirm">确定</button>\
 				</div>\
 			');
 			bind_arglens_select();
 			bind_condcheck();
 			bind_cond_var();
+			bind_confirm();
 		}else{
 			if ( $(this).nextAll('.settings') )
 				$(this).nextAll('.settings').show();
@@ -179,9 +211,21 @@ function bind_cond_var(){
 		var p = s.parent();
 		var f = p.find('select').val()!=0 && p.find('.cond-list-assign').val()!='' && p.find('.cond-list-value').val()!= '';
 		if ( f ){
-			s.unbind();
+			p.find('select').unbind();
 			p.find('.cond-list-assign').unbind();
 			p.find('.cond-list-value').unbind();
+			
+			//default the left is 32 bit
+			var sum = sum32;
+			if ( $(s).parents('.half')[0].className.search('right') > 0 )
+				sum = sum64;
+			
+			var afterStr = '<select>\
+				<option value="0" select="selected">-</option>';
+			zhStr = '一二三四五六七八九';
+			for( var i = 1; i <= sum; ++i )
+				afterStr += '<option value="'+i+'" >参数'+zhStr[i-1]+'</option>';
+			
 			p.after('\
 				<li>\
 					'+afterStr+'\
@@ -201,14 +245,15 @@ function bind_cond_var(){
 	$('.cond-list-value').blur(function(){finish($(this))});
 }
 
-var num32,num64;
+var sum32=5,sum64=6;
+/*var sum32,sum64;
 
 $.get("http://"+location.hostname+":80/get_args_sum",{},
 function(data,status){
 	if(data == ''){
 	}else{
 		var d = eval('('+data+')');
-		num32 = d['num32'];
-		num64 = d['num64'];
+		sum32 = d['sum32'];
+		sum64 = d['sum64'];
 	}
-});
+});*/
