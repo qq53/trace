@@ -1,6 +1,7 @@
 #include <netinet/in.h>
 #include "call.h"
 #include "handler.cpp"
+#include "custom.h"
 
 void init_call(){
 	for(int i = 0; i < CALL_NUMS; ++i)
@@ -12,6 +13,8 @@ void init_call(){
 	syscall_trace[BIND] = &bind64;
 #endif
 	syscall_trace[OPEN] = &open;
+
+	init_custom_call();
 }
 
 LOCAL_VAR is_user_data(BITS_TYPE addr){

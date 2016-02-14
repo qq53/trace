@@ -2,6 +2,7 @@
 
 import os
 import re
+import json
 
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
 
@@ -16,7 +17,7 @@ def get_api_name(b):
         l.append(i[p1:p2])
     return l
 
-def get_funcs():
+def get_inter_funcs():
     with open(cwd+'tracer/handler.cpp','rt') as f:
         d = f.readlines()
     d = list(filter(lambda x:x!='\n',d))
@@ -33,5 +34,104 @@ def get_funcs():
                 e[b2].append(name)
     return e
 
+def get_args_sum():
+    with open(cwd+'tracer/call.h','rt') as f:
+        d = f.readlines()
+    flag32 = False
+    for i in d:
+        if i.find('BIT32') >= 0:
+            flag32 = True
+        if i.find('MAX_ARGS_NUM') >= 0:
+            if flag32 == True:
+                num32 = i.split()[-1]
+                flag32 = False
+            else:
+                num64 = i.split()[-1]
+    return {'num32':num32,'num64':num64}
+
+def set(key,args,conds,name,bit):
+    #filter the internal function
+    e = get_inter_funcs()
+    if name in e[bit]:
+        return False
+
+    if os.path.exists(cwd+'configs/'+key) == False:
+        os.mknod(cwd+'configs/'+key)
+        t = '{}'
+    else:
+        with open(cwd+'configs/'+key,'r') as f:
+            t = f.read()
+    
+    with open(cwd+'configs/'+key,'w') as f:
+        d = json.loads(t)
+        k = name+'_'+bit
+        d[k] = {}
+        d[k]['args'] = args
+        d[k]['conds'] = conds
+        
+        f.write(json.dumps(d))
+
+    return True
+
+def make_custom_file(key='1'):
+    with open(cwd+'configs/'+key,'r') as f:
+        d = json.loads(f.read())
+    
+    call = {'32':[],'64':[]}
+    for k in d.keys():
+        name = k.split('_')[0]
+        bit = k.split('_')[1]
+        call[bit].append(name)
+    
+    s = ''
+    for i in call['32']:
+        s += 'void '+i+'_32(int n){\n'
+        n = d[i+'_32']
+
+        has_cond = False
+        pre_str = ''
+        if len(n['conds']) > 0:
+            pre_str = '\t'
+            has_cond = True
+
+        #cond
+        cond_str = ''
+        if has_cond:
+            cond = n['conds']
+            cond_str = pre_str+'if ( '
+            for j in cond:
+                cond_str += 'GET_ARGS('+j['arg']+')'+j['assign']+j['value']+'&&'
+            cond_str = cond_str[:-2]
+            cond_str += ' ){\n'
+        
+        s += cond_str
+
+        #args
+        var_str = ''
+        value_str = ''
+        arg = n['args']
+        for j in range(len(arg)):
+            var_str += arg[j]['format']+' '
+            if arg[j]['func'] == '':
+                value_str += 'GET_ARGS('+str(j+1)+'),'
+            else:
+                value_str += 'htol(GET_ARGS('+str(j+1)+')),'
+        value_str = value_str[:-1]
+
+        s += pre_str+'\tprintf("'+var_str+'",'+value_str+');\n'
+        if has_cond == True:
+            s += pre_str+'}\n'
+        s += '}\n'
+
+    s += 'void init_custom_call(){\n#ifdef BIT32\n'
+    for i in call['32']:
+        s += '\tsyscall_trace['+i.upper()+'] = &'+i+'_32\n';
+    s += '#else\n'
+    for i in call['64']:
+        s += '\tsyscall_trace['+i.upper()+'] = &'+i+'_64\n';
+    s += '#endif\n}\n'
+
+    print(s)
+
 if __name__=='__main__':
-    print(get_funcs())
+    print(get_inter_funcs())

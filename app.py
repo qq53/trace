@@ -8,7 +8,6 @@ import codecs
 import stat
 import config
 import json
-import setting
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -45,7 +44,7 @@ def home_POST():
     session['ro_addr'] = result['ro_addr']
     session['ro_size'] = result['ro_size']
 
-    funcs = config.get_funcs()
+    funcs = config.get_inter_funcs()
     api32e = funcs['32']
     api32n = config.get_api_name(32)
     for i in api32n:
@@ -107,33 +106,22 @@ def get_out():
 def getout_GET():
     return get_out()
 
-def get_args_sum():
-    with open(cwd+'tracer/call.h','rt') as f:
-        d = f.readlines()
-    flag32 = False
-    for i in d:
-        if i.find('BIT32') >= 0:
-            flag32 = True
-        if i.find('MAX_ARGS_NUM') >= 0:
-            if flag32 == True:
-                num32 = i.split()[-1]
-                flag32 = False
-            else:
-                num64 = i.split()[-1]
-    return {'num32':num32,'num64':num64}
-            
 @app.route('/get_args_sum', methods=['GET'])
 def get_args_sum_GET():
-    return json.dumps(get_args_sum())
+    return json.dumps(config.get_args_sum())
 
-@app.route('/setting', methods=['POST'])
-def setting_POST():
-    setting.set(key='1',
+@app.route('/set_config', methods=['POST'])
+def set_config_POST():
+    r = config.set(key='1',
         args = json.loads(request.form['args']),
         conds = json.loads(request.form['conds']),
-        name = request.form['name']
+        name = request.form['name'],
+        bit = request.form['bit']
     )
-    return 'ok'
+    if r == False:
+        return 'false'
+    else:
+        return 'true'
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)

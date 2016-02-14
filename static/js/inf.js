@@ -146,17 +146,22 @@ function bind_confirm(){
 				});
 			}
 		}
-		
+			
+		var bit = '32';
+		if ( par.parents('.half')[0].className.search('right') > 0 )
+			bit = '64';
 		//POST DATA
-		$.post("http://"+location.hostname+":80/setting",{
+		$.post("http://"+location.hostname+":80/set_config",{
 			'args': JSON.stringify(data['args']),
 			'conds': JSON.stringify(data['conds']),
-			'name': JSON.stringify(par.parent().children('label').text())
+			'name': par.parent().children('label').text(),
+			'bit': bit
 		},
 		function(data,status){
-			if(data == ''){
+			if(data == 'true'){
+				alert('修改成功');
 			}else{
-				console.log(data);
+				alert('修改失败');
 			}
 		});
 		
