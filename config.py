@@ -3,8 +3,10 @@
 import os
 import re
 import json
+import jinja2
 
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
+env = jinja2.Environment(loader = jinja2.FileSystemLoader(cwd+'templates'))
 
 def get_api_name(b):
     p = cwd+'tracer/call_name_'+str(b)+'.h'
@@ -77,61 +79,50 @@ def make_custom_file(key='1'):
     with open(cwd+'configs/'+key,'r') as f:
         d = json.loads(f.read())
     
-    call = {'32':[],'64':[]}
+    call32 = []
+    call64 = []
     for k in d.keys():
         name = k.split('_')[0]
         bit = k.split('_')[1]
-        call[bit].append(name)
-    
-    s = ''
-    for i in call['32']:
-        s += 'void '+i+'_32(int n){\n'
-        n = d[i+'_32']
+        if bit == '32':
+            call32.append(name)
+        else:
+            call64.append(name)
 
-        has_cond = False
-        pre_str = ''
-        if len(n['conds']) > 0:
-            pre_str = '\t'
-            has_cond = True
-
+    call = []
+    for k in d.keys():
         #cond
         cond_str = ''
-        if has_cond:
-            cond = n['conds']
-            cond_str = pre_str+'if ( '
-            for j in cond:
-                cond_str += 'GET_ARGS('+j['arg']+')'+j['assign']+j['value']+'&&'
-            cond_str = cond_str[:-2]
-            cond_str += ' ){\n'
+        for j in d[k]['conds']:
+            cond_str += 'GET_ARGS('+j['arg']+')'+j['assign']+j['value']+'&&'
+        cond_str = cond_str[:-2]
         
-        s += cond_str
-
         #args
         var_str = ''
         value_str = ''
-        arg = n['args']
+        arg = d[k]['args']
         for j in range(len(arg)):
             var_str += arg[j]['format']+' '
             if arg[j]['func'] == '':
                 value_str += 'GET_ARGS('+str(j+1)+'),'
             else:
                 value_str += 'htol(GET_ARGS('+str(j+1)+')),'
+        var_str = var_str[:-1]
         value_str = value_str[:-1]
-
-        s += pre_str+'\tprintf("'+var_str+'",'+value_str+');\n'
-        if has_cond == True:
-            s += pre_str+'}\n'
-        s += '}\n'
-
-    s += 'void init_custom_call(){\n#ifdef BIT32\n'
-    for i in call['32']:
-        s += '\tsyscall_trace['+i.upper()+'] = &'+i+'_32\n';
-    s += '#else\n'
-    for i in call['64']:
-        s += '\tsyscall_trace['+i.upper()+'] = &'+i+'_64\n';
-    s += '#endif\n}\n'
-
-    print(s)
+        
+        if cond_str == '':
+            call.append({'var_str':var_str,'value_str':value_str,'name':k})
+        else:
+            call.append({'cond_str':cond_str,'var_str':var_str,'value_str':value_str,'name':k})
+    
+    temp = env.get_template('custom.cpp')
+    r = temp.render(calls=call,calls_32=call32,calls_64=call64)
+    r = r.split('\n')
+    r = list(filter(lambda x:x!='\t' and x!='',r))
+    r = '\n'.join(r)
+    
+    with open(cwd+'configs/custom.cpp','w') as f:
+        f.write(r)
 
 if __name__=='__main__':
     print(get_inter_funcs())

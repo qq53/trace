@@ -1,18 +1,18 @@
 #include <netinet/in.h>
 #include "call.h"
 #include "handler.cpp"
-#include "custom.h"
+#include "../configs/custom.cpp"
 
 void init_call(){
 	for(int i = 0; i < CALL_NUMS; ++i)
 		syscall_trace[i] = &empty;
 	
 #ifdef BIT32
-	syscall_trace[SOCKETCALL] = &socketcall;
+	syscall_trace[SOCKETCALL] = &socketcall_32;
 #else
-	syscall_trace[BIND] = &bind64;
+	syscall_trace[BIND] = &bind_64;
 #endif
-	syscall_trace[OPEN] = &open;
+	syscall_trace[OPEN] = &open_32_64;
 
 	init_custom_call();
 }

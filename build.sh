@@ -33,6 +33,8 @@ case $1 in
 	rm subout
 	rm out
 	rm tmp
-	rm settings/*
+	rm -rf __pycache__
+	rm configs/custom.cpp
+	echo 'void init_custom_call(){}' > configs/custom.cpp
 	;;
 esac
