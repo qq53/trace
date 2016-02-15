@@ -51,10 +51,20 @@ def get_args_sum():
                 num64 = i.split()[-1]
     return {'num32':num32,'num64':num64}
 
-def set(key,args,conds,name,bit):
-    #filter the internal function
+def check(name,bit,conds):
     e = get_inter_funcs()
     if name in e[bit]:
+        return False
+
+    assign = ['==','>=','<=','!=']
+    for c in conds:
+        if c['assign'] not in assign:
+            return False
+
+    return True
+
+def set(key,args,conds,name,bit):
+    if check(name,bit,conds) == False:
         return False
 
     if os.path.exists(cwd+'configs/'+key) == False:
@@ -73,6 +83,8 @@ def set(key,args,conds,name,bit):
         
         f.write(json.dumps(d))
 
+    make_custom_file()
+
     return True
 
 def make_custom_file(key='1'):
@@ -82,8 +94,8 @@ def make_custom_file(key='1'):
     call32 = []
     call64 = []
     for k in d.keys():
-        name = k.split('_')[0]
-        bit = k.split('_')[1]
+        bit = k.split('_')[-1]
+        name = k[:k.find(bit)-1]
         if bit == '32':
             call32.append(name)
         else:
@@ -123,6 +135,9 @@ def make_custom_file(key='1'):
     
     with open(cwd+'configs/custom.cpp','w') as f:
         f.write(r)
+    
+    os.chdir('tracer')
+    os.system('bash make.sh')
 
 if __name__=='__main__':
     print(get_inter_funcs())

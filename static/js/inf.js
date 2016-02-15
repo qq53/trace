@@ -201,7 +201,13 @@ $('.container .arg-check').click(function(){
 						<li>'+
 						afterStr+'\
 							</select>\
-							<input type="text" placeholder="例如: == >= <=" class="cond-list-assign" />\
+							<select class="cond-list-assign">\
+								<option value="" select="selected">-</option>\
+								<option value="==">==</option>\
+								<option value="!=">!=</option>\
+								<option value=">=">>=</option>\
+								<option value="<="><=</option>\
+							</select>\
 							<input class="cond-list-value" type="text" placeholder="数值或变量" />\
 						</li>\
 					</ul>\
@@ -246,7 +252,13 @@ function bind_cond_var(){
 				<li>\
 					'+afterStr+'\
 					</select>\
-					<input type="text" placeholder="例如: == >= <=" class="cond-list-assign" />\
+					<select class="cond-list-assign">\
+						<option value="" select="selected">-</option>\
+						<option value="==">==</option>\
+						<option value="!=">!=</option>\
+						<option value=">=">>=</option>\
+						<option value="<="><=</option>\
+					</select>\
 					<input class="cond-list-value" type="text" placeholder="数值或变量" />\
 				</li>\
 			');
