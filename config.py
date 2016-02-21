@@ -83,7 +83,7 @@ def set(key,args,conds,name,bit):
         
         f.write(json.dumps(d))
 
-    make_custom_file()
+    make_custom_file(key)
 
     return True
 
@@ -136,8 +136,14 @@ def make_custom_file(key='1'):
     with open(cwd+'configs/custom.cpp','w') as f:
         f.write(r)
     
-    os.chdir('tracer')
+    os.chdir(cwd+'tracer/')
     os.system('bash make.sh')
+
+def get(key='1'):
+    r = ''
+    with open(cwd+'configs/'+key,'r') as f:
+        r = f.read()
+    return r
 
 if __name__=='__main__':
     print(get_inter_funcs())

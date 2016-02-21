@@ -123,6 +123,10 @@ def set_config_POST():
     else:
         return 'true'
 
+@app.route('/get_config', methods=['GET'])
+def get_config_GET():
+    return config.get('1')
+
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
     app.run(port=80,host='0.0.0.0')

@@ -168,66 +168,6 @@ function bind_confirm(){
 	});
 }
 
-$('.container .arg-check').click(function(){
-	if (this.checked){
-		if ( $(this).nextAll('.settings') ){
-			//default the left is 32 bit
-			var sum = sum32;
-			if ( $(this).parents('.half')[0].className.search('right') > 0 )
-				sum = sum64;
-
-			var preStr = '\
-				<div class="settings">\
-					<label class="arg-label arg-label-len">参数个数</label>\
-					<select class="arg-lens">\
-						<option value="0" select="selected">-</option>';
-			for( var i = 1; i <= sum; ++i )
-				preStr += '<option value="'+i+'" >'+i+'</option>';
-			
-			var afterStr = '<select>\
-							<option value="0" select="selected">-</option>';
-			zhStr = '一二三四五六七八九';
-			for( var i = 1; i <= sum; ++i )
-				afterStr += '<option value="'+i+'" >参数'+zhStr[i-1]+'</option>';			
-				
-			$(this).next('label').after(preStr+'\
-					</select>\
-					<div class="arg-list">\
-						<ul>\
-						</ul>\
-					</div>\
-					<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" class="cond-check">\
-					<ul class="cond-list">\
-						<li>'+
-						afterStr+'\
-							</select>\
-							<select class="cond-list-assign">\
-								<option value="" select="selected">-</option>\
-								<option value="==">==</option>\
-								<option value="!=">!=</option>\
-								<option value=">=">>=</option>\
-								<option value="<="><=</option>\
-							</select>\
-							<input class="cond-list-value" type="text" placeholder="数值或变量" />\
-						</li>\
-					</ul>\
-					<button type="button" class="btn am-btn am-btn-default cond-confirm">确定</button>\
-				</div>\
-			');
-			bind_arglens_select();
-			bind_condcheck();
-			bind_cond_var();
-			bind_confirm();
-		}else{
-			if ( $(this).nextAll('.settings') )
-				$(this).nextAll('.settings').show();
-		}
-	}else{
-		if ( $(this).nextAll('.settings') )
-			$(this).nextAll('.settings').hide();
-	}
-});
-
 function bind_cond_var(){
 	function finish(s){
 		var p = s.parent();
@@ -285,3 +225,202 @@ function(data,status){
 		sum64 = d['sum64'];
 	}
 });*/
+
+$.get("http://"+location.hostname+":80/get_config",{},
+function(data,status){
+	if(data == ''){
+	}else{
+		data = eval('('+data+')');
+		for(var d in data){
+			var s = d.split('_');
+			var split_len = s.length;
+			var bit = s[split_len-1];
+			var name = d.substring(0,d.indexOf('_'+bit));
+			var args_len = data[d].args.length;
+			var sum;
+
+			if ( bit == '32' ){
+				sum = sum32;
+				var t = $('.container .left:eq(1)').find('ul li label').filter(function(){return $(this).text()==name;})
+			}else{
+				sum = sum64;
+				var t = $('.container .right:eq(1)').find('ul li label').filter(function(){return $(this).text()==name;})
+			}
+	
+			//args length
+			var setStr = `
+				<div class="settings">
+					<label class="arg-label arg-label-len">参数个数</label>
+					<select class="arg-lens">
+						<option value="0">-</option>`;
+			for( var i = 1; i <= sum; ++i ){
+				if ( i == args_len )
+					setStr += '<option value="'+i+'" selected>'+i+'</option>';
+				else
+					setStr += '<option value="'+i+'" >'+i+'</option>';
+			}
+			setStr += `
+					</select>
+					<div class="arg-list">
+						<ul>`;
+			//list arg
+			for(var i = 0; i < data[d].args.length; ++i){
+				if ( data[d].args[i].func == '' )
+					setStr += `
+					<li>
+						<input class="format" type="text" placeholder="输出格式: %d" value="`+data[d].args[i].format+`" />
+						<select>
+							<option value="" selected>处理函数</option>
+							<option value="htol">htol</option>
+						</select>
+					</li>`;
+				else
+					setStr += `
+					<li>
+						<input class="format" type="text" placeholder="输出格式: %d" value="`+data[d].args[i].format+`" />
+						<select>
+							<option value="">处理函数</option>
+							<option value="htol" selected>htol</option>
+						</select>
+					</li>`;
+			}
+
+			if ( data[d].conds.length > 0 )
+				setStr += `
+							</ul>
+						</div>
+						<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" class="cond-check" checked>
+						<ul class="cond-list">`;
+			else
+				setStr += `
+							</ul>
+						</div>
+						<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" class="cond-check">
+						<ul class="cond-list">`;
+
+			//list cond
+			var zhStr = '一二三四五六七八九';
+			for(var i = 0; i < data[d].conds.length; ++i){
+				setStr += `
+						<li>
+							<select>
+								<option value="0">-</option>`;
+					for( var j = 1; j <= sum; ++j ){
+						if ( data[d].conds[i].arg == j )
+							setStr += '<option value="'+j+'" selected>参数'+zhStr[j-1]+'</option>';
+						else
+							setStr += '<option value="'+j+'">参数'+zhStr[j-1]+'</option>';
+					}
+				setStr += `
+							</select>
+							<select class="cond-list-assign">`;
+				
+				assign_arr = ['','==','!=','>=','<='];
+				for(var j = 0; j < assign_arr.length; ++j){
+					if( data[d].conds[i].assign == assign_arr[j] )
+						setStr += '<option value="'+assign_arr[j]+'" selected>'+assign_arr[j]+'</option>\;
+					else
+						setStr += '<option value="'+assign_arr[j]+'">'+assign_arr[j]+'</option>';
+				}
+
+				setStr += `
+							</select>
+							<input class="cond-list-value" type="text" placeholder="数值或变量" value="`+data[d].conds[i].value+`" />
+						</li>`;
+			}
+			
+			var afterStr = '';
+			if( data[d].conds.length > 0){
+				afterStr = `
+							<li>
+								<select>
+								<option value="0" select="selected">-</option>`;
+				for( var i = 1; i <= sum; ++i )
+					afterStr += '<option value="'+i+'" >参数'+zhStr[i-1]+'</option>';
+			}
+
+			setStr += afterStr+`
+							</select>\
+							<select class="cond-list-assign">\
+								<option value="" select="selected">-</option>\
+								<option value="==">==</option>\
+								<option value="!=">!=</option>\
+								<option value=">=">>=</option>\
+								<option value="<="><=</option>\
+							</select>\
+							<input class="cond-list-value" type="text" placeholder="数值或变量" />\
+						</li>
+					</ul>
+					<button type="button" class="btn am-btn am-btn-default cond-confirm">确定</button>
+				</div>`;
+
+			t.after(setStr);
+			t.next().hide();
+
+			bind_arglens_select();
+			bind_condcheck();
+			bind_cond_var();
+			bind_confirm();
+		}
+	}
+});
+
+$('.container .arg-check').click(function(){
+	if (this.checked){
+		if ( $(this).nextAll('.settings').length == 0 ){
+			//default the left is 32 bit
+			var sum = sum32;
+			if ( $(this).parents('.half')[0].className.search('right') > 0 )
+				sum = sum64;
+
+			var preStr = `
+				<div class="settings">
+					<label class="arg-label arg-label-len">参数个数</label>
+					<select class="arg-lens">
+						<option value="0" select="selected">-</option>`;
+			for( var i = 1; i <= sum; ++i )
+				preStr += '<option value="'+i+'" >'+i+'</option>';
+			
+			var afterStr = `<select>
+							<option value="0" select="selected">-</option>`;
+			var zhStr = '一二三四五六七八九';
+			for( var i = 1; i <= sum; ++i )
+				afterStr += '<option value="'+i+'" >参数'+zhStr[i-1]+'</option>';			
+				
+			$(this).next('label').after(preStr+`
+					</select>
+					<div class="arg-list">
+						<ul>
+						</ul>
+					</div>
+					<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" class="cond-check">
+					<ul class="cond-list">
+						<li>`+
+						afterStr+`
+							</select>
+							<select class="cond-list-assign">
+								<option value="" select="selected">-</option>
+								<option value="==">==</option>
+								<option value="!=">!=</option>
+								<option value=">=">>=</option>
+								<option value="<="><=</option>
+							</select>
+							<input class="cond-list-value" type="text" placeholder="数值或变量" />
+						</li>
+					</ul>
+					<button type="button" class="btn am-btn am-btn-default cond-confirm">确定</button>
+				</div>
+			`);
+			bind_arglens_select();
+			bind_condcheck();
+			bind_cond_var();
+			bind_confirm();
+		}else{
+			if ( $(this).nextAll('.settings') )
+				$(this).nextAll('.settings').show();
+		}
+	}else{
+		if ( $(this).nextAll('.settings') )
+			$(this).nextAll('.settings').hide();
+	}
+});

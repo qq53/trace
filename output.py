@@ -20,6 +20,7 @@ def home_POST():
 
 @app.route('/start', methods=['GET'])
 def start_GET():
+    session['out_lines'] = 0
     pid = os.fork()
     if pid == 0:
         os.system('./redirect_in/in tmp')
@@ -50,8 +51,11 @@ def input_POST():
 
 def get_out():
     result = ''
+    l = session['out_lines']
     with open('subout','rb') as f:
-        result = f.read()
+        result = f.readlines()
+        session['out_lines'] = len(result)
+        result = ''.join(result[l:])
     return result
 
 @app.route('/getout', methods=['GET'])

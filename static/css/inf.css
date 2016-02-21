@@ -323,6 +323,7 @@ table tr:first-child th{
 }
 
 .container .cond-list{
+	display: block;
 	padding-left: 50px;
 	margin-bottom: 8px;
 }
