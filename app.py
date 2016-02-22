@@ -15,9 +15,8 @@ env = Environment(loader = FileSystemLoader(cwd+'templates'))
 
 @app.route('/', methods=['GET'])
 def home():
-    with codecs.open(cwd+'index.html','r','utf-8') as f:
-        d = f.read()
-        return d
+    template_index = env.get_template('index.html')
+    return template_index.render()
 
 @app.route('/', methods=['POST'])
 def home_POST():
