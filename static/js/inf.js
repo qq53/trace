@@ -1,21 +1,24 @@
-$('.input-text').keydown(function(e){
-	s = $(this);
+$('.input').keydown(function(e){
 	if( e.which == 13){
-		if($('#state')[0].className == 'stop'){
-			alert("running");
-			return;
+		var t = e.target;
+		var s = $(this);
+		var is = s.find("input");
+		var l = is.length;
+		if(t == is[l-1]){
+			var d = "";
+			s.find('input').each(function(){
+				d += $(this).val() + '\n';	
+			})
+			$.post("http://"+location.hostname+":81/input",
+			{
+				data: d
+			},
+			function(data,status){
+				s.append('<div class="input-text"><input></input></div>');
+				s.find("input")[l].focus();
+				$('#state')[0].className = 'stop';
+			});
 		}
-		$.post("http://"+location.hostname+":81/input",
-		{
-			data:s.children('input').val()
-		},
-		function(data,status){
-			//alert("Data: " + data + "\nStatus: " + status);
-			s.append('<div class="input-text"><input></input></div>');
-			var inputLast = $(".input-text input").length - 1;
-			$(".input-text input")[inputLast].focus();
-			$('#state')[0].className = 'stop';
-		});
 	}
 });
 
@@ -78,6 +81,12 @@ function get_out(){
 		if(data == ''){
 			$('#state')[0].className = 'start';
 		}else{
+			var r = data.split('\n').join('<br />');
+			var s = $('#terminator .input');
+			s.append("<div>"+r+"</div>");
+			s.append('<div class="input-text"><input></input></div>');
+			var inputLast = s.find("input").length - 1;
+			s.find("input")[inputLast].focus();
 			setTimeout("get_out()",500);
 		}
 	});
@@ -318,7 +327,7 @@ function(data,status){
 				assign_arr = ['','==','!=','>=','<='];
 				for(var j = 0; j < assign_arr.length; ++j){
 					if( data[d].conds[i].assign == assign_arr[j] )
-						setStr += '<option value="'+assign_arr[j]+'" selected>'+assign_arr[j]+'</option>\;
+						setStr += '<option value="'+assign_arr[j]+'" selected>'+assign_arr[j]+'</option>';
 					else
 						setStr += '<option value="'+assign_arr[j]+'">'+assign_arr[j]+'</option>';
 				}

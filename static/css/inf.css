@@ -179,7 +179,7 @@ table tr:first-child th{
     color: wheat;
     padding: 10px;
     background: rgba(0,0,0,0.7);
-    overflow: overlay;
+    overflow: auto;
 }
 
 .termin-hidden{
@@ -190,9 +190,20 @@ table tr:first-child th{
     background: transparent;
     border: none;
     outline: none;
+	width: 95%;
 }
 
-.input-text:before{
+#terminator .input{
+	position: relative;
+	min-height: 100%;
+}
+
+#terminator .input-text{
+	display: inline-block;
+	width: 100%;
+}
+
+#terminator .input-text:before{
 	content: '> ';
 }
 
@@ -223,8 +234,8 @@ table tr:first-child th{
 
 #state{
 	position: absolute;
-	bottom: 10px;
-	right: 10px;
+	bottom: 0;
+	right: 0;
 	width: 24px;
 	height: 24px;
 	background-size: 24px;

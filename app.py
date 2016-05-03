@@ -25,7 +25,7 @@ def home_POST():
 
     elf.rm(sf)
     elf.rm("subin")
-    elf.rm("subout")
+    #elf.rm("subout")
     elf.rm("out")
 
     f.save(sf)
@@ -38,7 +38,6 @@ def home_POST():
     result.pop('sh')
     result.pop('ph')
 
-    session['outlines'] = []
     session['class'] = result['class']
     session['ro_addr'] = result['ro_addr']
     session['ro_size'] = result['ro_size']
