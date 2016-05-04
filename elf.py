@@ -28,10 +28,10 @@ def get_trace_str():
         t = list(map(lambda x:x.split(' '),t))
         arr = []
         for i in t:
-                if i[0][0] == '#':
-                        arr.append({'name':i[0][1:],'args':' '.join(i[1:]),'class':'danger'})
-                else:
-                        arr.append({'name':i[0],'args':' '.join(i[1:]),'class':''})
+            if i[0][0] == '#':
+                arr.append({'name':i[0][1:],'args':' '.join(i[1:]),'class':'danger'})
+            else:
+                arr.append({'name':i[0],'args':' '.join(i[1:]),'class':''})
         return arr
 
 def trace_elf(cmd):
@@ -40,7 +40,7 @@ def trace_elf(cmd):
 
 def get_pid_by_comm(comm):
     cmd = 'ps --no-header -C '+comm+' -o pid'
-    p = os.popen(cmd).read()
+    p = os.popen(cmd).readline()
     return p
 
 def kill_by_comm(comm,signal=None):
@@ -49,7 +49,7 @@ def kill_by_comm(comm,signal=None):
         if signal == None:
             os.system('kill '+p)
         else:
-            os.system('kill -s '+signal+' '+p)
+            os.system('kill -s '+str(signal)+' '+p)
 
 def rm(path):
     if os.path.isfile(path):

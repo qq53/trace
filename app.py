@@ -25,7 +25,7 @@ def home_POST():
 
     elf.rm(sf)
     elf.rm("subin")
-    #elf.rm("subout")
+    elf.rm("subout")
     elf.rm("out")
 
     f.save(sf)
@@ -41,6 +41,7 @@ def home_POST():
     session['class'] = result['class']
     session['ro_addr'] = result['ro_addr']
     session['ro_size'] = result['ro_size']
+    session['outLines'] = 0
 
     funcs = config.get_inter_funcs()
     api32e = funcs['32']
@@ -79,25 +80,27 @@ def kill_task():
 @app.route('/input', methods=['POST'])
 def input_GET():
     d = request.form['data']
-    with open('subin','ab') as f:
+    with open('subin','a') as f:
         f.write(d)
 
-    kill_task()
     pid = os.fork()
     if pid == 0:
+        kill_task()
         elf.trace_elf(get_cmd())
     else:
         return ''
 
-@app.route('/stop', methods=['GET'])
-def stop_GET():
-    kill_task()
-    return ''
-
 def get_out():
     result = ''
-    with open('out','rb') as f:
-        result = f.read()
+    with open('out','r') as f:
+        d = f.readlines()
+        l = session['outLines']
+        if l < len(d):
+            session['outLines'] = len(d)
+            result = ''.join(d[l:])
+        else:
+            kill_task()
+
     return result
 
 @app.route('/getout', methods=['GET'])
@@ -127,4 +130,4 @@ def get_config_GET():
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
-    app.run(port=80,host='0.0.0.0')
+    app.run(port=80,host='0.0.0.0',debug=True)
