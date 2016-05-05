@@ -8,6 +8,7 @@ import codecs
 import stat
 import config
 import json
+import time
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -97,7 +98,29 @@ def get_out():
         l = session['outLines']
         if l < len(d):
             session['outLines'] = len(d)
-            result = ''.join(d[l:])
+            datas = []
+            for r in d[l:]:
+                tmpd = {}
+                if r.find('=') > 0:
+                    tmp = r.split('=')
+                    tmpd['result'] = tmp[-1].strip()
+                    args = tmp[:-1][0].strip()
+                else:
+                    args = r.strip()
+                tmp = args.split(' ')
+                func_name = tmp[0]
+                if func_name[0] == '#':
+                    tmpd['danger'] = True
+                    func_name = func_name[1:]
+                func_args = []
+                for i in tmp[1:]:
+                    func_args.append(i)
+                tmpd['name'] = func_name
+                tmpd['args'] = func_args
+                datas.append(tmpd)
+            t = time.strftime('%H:%M')
+            template_traceout = env.get_template('traceout.html')
+            result = template_traceout.render(data=datas,time=t)
         else:
             kill_task()
 

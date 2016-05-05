@@ -65,7 +65,7 @@ function get_trace_out(){
 		if(data == ''){
 			$('#state')[0].className = 'start';
 		}else{
-			console.log(data);
+			$('#tab4 .container').append(data);
 			setTimeout("get_trace_out()",300);
 		}
 	});
@@ -83,6 +83,8 @@ function get_out(n = 0){
 			var l = s.find("input").length;
 			var ns = s.find("input");
 			g_outLines += sl.length - 1;
+			if (g_outLines == 0)
+				g_outLines = 1;
 			$(ns[l-1]).parent().remove();
 			s.append("<div>"+r+"</div>");
 			s.append('<div class="input-text"><input></input></div>');

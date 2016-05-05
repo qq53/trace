@@ -40,75 +40,48 @@ table tr:first-child th{
 .times:before{
 	content: '';
 	position: absolute;
-	top: 10px;
+	top: 2px;
 	bottom: 0;
-	width: 7px;
-	background: #afdcf8;
-	left: 50%;
-	transform: translateX(-50%);
+	width: 1px;
+	background: #ccc;
 }
 
-.times > li{
-	position: relative;
-}
-
-.times > li:nth-child(even) > .text{
-	margin-left: -340px;
-	left: 50%;
-}
-
-.times > li  > .text{
-	margin-bottom: 30px;
-	background: #3594cb;
-	color: #fff;
-	padding: 10px;
-	font-size: 1.2em;
-	font-weight: 300;
-	line-height: 1.4;
-	position: relative;
-	border-radius: 5px;
-	width: 300px;
-	left: 50%;
-	margin-left: 40px;
-}
-
-.times > li > .text:after{
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
+.times-icon{
+	transform: scale(2);
+	background-color: #fff;
+	left: -8px;
+	margin-top: 8px;
 	position: absolute;
-	pointer-events: none;
-	border-width: 10px;
-	top: 10px;
+	border: 3px solid #fff;
 }
 
-.times > li:nth-child(odd) > .text:after{
-	right: 100%;
-	border-right-color: #3594cb;
+.times-text{
+	padding-left: 30px;
+	margin-bottom: 40px;
 }
 
-.times > li:nth-child(even) > .text:after{
-	left: 100%;
-	border-left-color: #3594cb;
+.times-title{
+	font-size: 1.5em;
+	font-weight: bold;
 }
 
-.times > li  > .icon{
-	width: 20px;
-	height: 20px;
+.times-arg{
+	font-size: 1.3em;
+	opacity: 0.9;
+	padding-left: 10px;
+}
+
+.times .danger .times-title{
+	color: #f00;
+}
+
+.times-split{
+	border-bottom: 1px solid #ccc;
+	width: 100px;
+	margin-top: -45px;
+	left: 0;
 	position: absolute;
-	background: #fff;
-	border-radius: 50%;
-	box-shadow: 0 0 0 6px #afdcf8;
 	text-align: center;
-	left: 50%;
-	top: 0;
-	margin-top: 10px;
-	transform: translateX(-50%);
-}
-
-.danger{
-	box-shadow: 0 0 4px red;
 }
 
 .am-table{
@@ -156,7 +129,7 @@ table tr:first-child th{
 #tab1 .container{z-index:0;}
 #tab2 .container{z-index:1;}
 #tab3 .container{z-index:2;}
-#tab4 .container{z-index:3;}
+#tab4 .container{z-index:3;margin-top: 40px;padding: 0 120px;}
 #tab5 .container{z-index:4; padding-bottom: 24px;}
 
 #footer{

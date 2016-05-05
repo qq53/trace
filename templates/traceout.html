@@ -1,0 +1,21 @@
+<ul class="times">
+{% for i in data %}
+<li>
+	<div class="am-icon-lemon-o times-icon"></div>
+	{% if i.danger %}
+	<div class="times-text danger">
+	{% else %}
+	<div class="times-text">
+	{% endif %}
+		<div class="times-title">{{ i.name }}</div>
+		{% for v in i.args %}
+		<div class="times-arg">{{ v }}</div>
+		{% endfor %}
+		{% if i.result %}
+		<div class="times-arg">返回值{{ i.result }}</div>
+		{% endif %}
+	</div>
+</li>
+{% endfor %}
+</ul>
+<div class="times-split">{{ time }}</div>
