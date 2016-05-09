@@ -42,13 +42,68 @@ void socketcall_32(int n){
 }
 
 void open_32_64(int n){
-	struct stat sbuf;
-	const char *file = check_str(GET_ARGS(1));
-	stat(file, &sbuf);
-	if(sbuf.st_uid == 0)
-		printf("#");
-	if(file)
-		printf("open %s = %x\n", file, reg0);
-	else
-		printf("open %x = %x\n", GET_ARGS(1), reg0);
+	int arg1 = GET_ARGS(1);
+	const char *file = NULL;
+	switch(arg1){
+		case 0:
+			file = "STDIN";
+			break;
+		case 1:
+			file = "STDOUT";
+			break;
+		case 2:
+			file = "STDERR";
+			break;
+		default:
+			file = check_str(arg1);
+			break;
+	}
+	if( arg1 > 2 && file ){
+		struct stat sbuf;
+		stat(file, &sbuf);
+		if(sbuf.st_uid == 0 || strstr(file, "/etc"))
+			printf("#");
+	}
+	printf("open %s = %x\n", file, reg0);
+}
+
+const char *get_fd_path(int fd){
+	if( fd < 0 )
+		return NULL;
+
+	const char *result;
+	char *buf = NULL;
+
+	switch(fd){
+		case 0:
+			result = "STDIN";
+			break;
+		case 1:
+			result = "STDOUT";
+			break;
+		case 2:
+			result = "STDOUT";
+			break;
+		default:
+			char *path = new char[1024];
+			buf = new char[1024];
+			snprintf(buf, sizeof(buf), "/proc/self/fd/%d", fd);
+			if( readlink(buf, path, sizeof(path)-1) != -1 )
+				result = path;
+			break;
+	}
+
+	if( buf )
+		delete buf;
+	return result;
+}
+
+void write_32_64(int n){
+	int fd = GET_ARGS(1);
+	const char *path = get_fd_path(fd);
+
+	printf("write %s = %x\n", path, reg0);
+	
+	if( fd > 2 && path )
+		delete path;
 }

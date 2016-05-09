@@ -224,22 +224,24 @@ function bind_cond_var(){
 	$('.cond-list-value').blur(function(){finish($(this))});
 }
 
-//var sum32=5,sum64=6;
-var sum32,sum64;
+var sum32=5,sum64=6;
+/*var sum32,sum64;
 
 $.get("http://"+location.hostname+":80/get_args_sum",{},
 function(data,status){
 	if(data == ''){
 	}else{
 		var d = eval('('+data+')');
+		console.log(d);
 		sum32 = d['sum32'];
 		sum64 = d['sum64'];
 	}
-});
+});*/
 
 $.get("http://"+location.hostname+":80/get_config",{},
 function(data,status){
 	if(data == ''){
+		console.log(sum32,sum64);
 	}else{
 		data = eval('('+data+')');
 		for(var d in data){
@@ -405,7 +407,7 @@ $('.container .arg-check').click(function(){
 						</ul>
 					</div>
 					<label class="arg-label second">条件跟踪</label><input type="checkbox" value="cond" class="cond-check">
-					<ul class="cond-list">
+					<ul class="cond-list" style="display:none;">
 						<li>`+
 						afterStr+`
 							</select>

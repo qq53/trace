@@ -13,7 +13,7 @@ void init_call(){
 	syscall_trace[BIND] = &bind_64;
 #endif
 	syscall_trace[OPEN] = &open_32_64;
-	syscall_trace[WRITE] = &def;
+	syscall_trace[WRITE] = &write_32_64;
 
 	init_custom_call();
 }

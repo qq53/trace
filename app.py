@@ -95,7 +95,8 @@ def get_out():
     result = ''
     with open('out','r') as f:
         d = f.readlines()
-        l = session['outLines']
+        #l = session['outLines']
+        l = 0
         if l < len(d):
             session['outLines'] = len(d)
             datas = []
