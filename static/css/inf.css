@@ -205,25 +205,44 @@ table tr:first-child th{
 	opacity: 0 !important;
 }
 
+@keyframes statespin
+{
+	from{ transform: rotate(0); }
+	to { transform: rotate(360deg); }
+}
+
+.state-spin{
+	animation: statespin 1s linear infinite;
+	cursor: normal !important;
+}
+
 #state{
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	width: 24px;
-	height: 24px;
-	background-size: 24px;
-	-webkit-filter: invert(100%);
+	color: white;
 	cursor: pointer;
-	transition: all .4s;
+	font-size: 150%;
 }
 
-.start{
-	background: url('../img/start.png');
+@keyframes refreshspin
+{
+	from{ transform: rotate(0); }
+	to { transform: rotate(360deg); }
 }
 
-.stop{
-	background: url('../img/stop.png');
-	transform: rotate(360deg);
+#refresh{
+	position: absolute;
+	bottom: 0;
+	right: 40px;
+	color: white;
+	cursor: pointer;
+	opacity: 0.9;
+	font-size: 140%;
+}
+
+#refresh:hover{
+	animation: refreshspin 1s linear infinite;
 }
 
 .half{

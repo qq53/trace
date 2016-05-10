@@ -47,15 +47,21 @@ def home_POST():
     funcs = config.get_inter_funcs()
     api32e = funcs['32']
     api32n = config.get_api_name(32)
+    comm_api = []
     for i in api32n:
         if i in api32e:
-            api32n.remove(i)
+            comm_api.append(i)
+    for i in comm_api:
+        api32n.remove(i)
 
     api64e = funcs['64']
     api64n = config.get_api_name(64)
+    comm_api = []
     for i in api64n:
         if i in api64e:
-            api64n.remove(i)
+            comm_api.append(i)
+    for i in comm_api:
+        api64n.remove(i)
 
     return template.render(header=result,sections=ss,programs=ps,apis32e=api32e,apis64e=api64e,apis32n=api32n,apis64n=api64n)
 
@@ -95,8 +101,8 @@ def get_out():
     result = ''
     with open('out','r') as f:
         d = f.readlines()
-        #l = session['outLines']
-        l = 0
+        l = session['outLines']
+        #l = 0
         if l < len(d):
             session['outLines'] = len(d)
             datas = []
@@ -151,6 +157,15 @@ def set_config_POST():
 @app.route('/get_config', methods=['GET'])
 def get_config_GET():
     return config.get('1')
+
+@app.route('/refresh', methods=['GET'])
+def refresh_GET():
+    session['outLines'] = 0
+    kill_task()
+    elf.rm("subin")
+    elf.rm("subout")
+    elf.rm("out")
+    return 'ok'
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)

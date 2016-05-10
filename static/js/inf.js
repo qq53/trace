@@ -19,7 +19,7 @@ $('.input').keydown(function(e){
 			function(data,status){
 				s.append('<div class="input-text"><input></input></div>');
 				s.find("input")[l].focus();
-				$('#state')[0].className = 'stop';
+				$('#state')[0].className = 'am-icon-spinner state-spin';
 				setTimeout("get_out("+g_outLines+")",300);
 			});
 		}
@@ -45,7 +45,7 @@ $('#terminator').click(function(e){
 
 $('#state').click(function(){
 	t = this;
-	if(t.className == 'start'){
+	if(t.className == 'am-icon-play'){
 		$.get("http://"+location.hostname+":80/start",{},
 		function(data,status){
 			setTimeout("get_trace_out()",300);
@@ -55,7 +55,7 @@ $('#state').click(function(){
 		function(data,status){
 			setTimeout("get_out("+g_outLines+")",300);
 		});
-		t.className = 'stop';
+		t.className = 'am-icon-spinner state-spin';
 	}
 });
 
@@ -63,7 +63,7 @@ function get_trace_out(){
 	$.get("http://"+location.hostname+":80/getout",{},
 	function(data,status){
 		if(data == ''){
-			$('#state')[0].className = 'start';
+			$('#state')[0].className = 'am-icon-play';
 		}else{
 			$('#tab4 .container').append(data);
 			setTimeout("get_trace_out()",300);
@@ -75,7 +75,6 @@ function get_out(n = 0){
 	$.get("http://"+location.hostname+":81/getout?n="+n,{},
 	function(data,status){
 		if(data == ''){
-			$('#state')[0].className = 'start';
 		}else{
 			var sl = data.split('\n');
 			var r = sl.join('<br />');
@@ -436,4 +435,14 @@ $('.container .arg-check').click(function(){
 		if ( $(this).nextAll('.settings') )
 			$(this).nextAll('.settings').hide();
 	}
+});
+
+$('#refresh').click(function(){
+	$.get("http://"+location.hostname+":80/refresh",{},
+	function(data,status){
+		if(data != ''){
+			$('#tab4 .container').html('');
+			$('#terminator .input-text').html('<input></input>');
+		}
+	});
 });

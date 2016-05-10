@@ -64,7 +64,10 @@ void open_32_64(int n){
 		if(sbuf.st_uid == 0 || strstr(file, "/etc"))
 			printf("#");
 	}
-	printf("open %s = %x\n", file, reg0);
+	if( file )
+		printf("open %s = %x\n", file, reg0);
+	else
+		printf("open %x = %x\n", arg1, reg0);
 }
 
 const char *get_fd_path(int fd){
@@ -101,8 +104,11 @@ const char *get_fd_path(int fd){
 void write_32_64(int n){
 	int fd = GET_ARGS(1);
 	const char *path = get_fd_path(fd);
-
-	printf("write %s = %x\n", path, reg0);
+	
+	if( path )
+		printf("write %s = %x\n", path, reg0);
+	else	
+		printf("write %x = %x\n", fd, reg0);
 	
 	if( fd > 2 && path )
 		delete path;
