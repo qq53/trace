@@ -33,6 +33,9 @@ def home_POST():
     os.chmod(sf,stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
     result = elf.elf(sf)
+    if result == None:
+        return 'false'
+
     template = env.get_template('inf.html')
     ss = result['sh']
     ps = result['ph']

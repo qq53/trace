@@ -61,8 +61,12 @@ function uploadComplete(evt) {
 		document.body.appendChild(temp);      
 		temp.submit();      
 		return temp;      
-	}        
-	post('inf', {'data': evt.target.responseText});
+	}   
+	var resText = evt.target.responseText;
+	if( resText.substring(0,5) == 'false' )
+		alert('非ELF文件');
+	else
+		post('inf', {'data': evt.target.responseText});
 }
 
 function uploadFailed(evt) {
