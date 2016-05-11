@@ -64,10 +64,8 @@ def check(name,bit,conds):
     return True
 
 def set(key,args,conds,name,bit):
-    print(123)
     if check(name,bit,conds) == False:
         return False
-    print(123)
 
     if os.path.exists(cwd+'configs/'+key) == False:
         os.mknod(cwd+'configs/'+key)
