@@ -13,7 +13,7 @@ def get_api_name(b):
     with open(p,'rt') as f:
          s = f.readlines()
     l = []
-    for i in s:
+    for i in s[1:-1]:
         p1 = i.find('"')+1
         p2 = i.find('"',p1)
         l.append(i[p1:p2])

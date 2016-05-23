@@ -1,4 +1,5 @@
-const char *syscall_name[] = {"read",
+const char *syscall_name[] = {
+	"read",
 	"write",
 	"open",
 	"close",
@@ -313,4 +314,5 @@ const char *syscall_name[] = {"read",
 	"kcmp",
 	"finit_module",
 	"sched_setattr",
-	"sched_getattr"};
+	"sched_getattr"
+};

@@ -1,4 +1,5 @@
-const char*syscall_name[] = {"restart_syscall",
+const char*syscall_name[] = {
+	"restart_syscall",
 	"exit",
 	"fork",
 	"read",
@@ -351,4 +352,5 @@ const char*syscall_name[] = {"restart_syscall",
 	"seccomp",
 	"getrandom",
 	"memfd_create",
-	"bpf"};
+	"bpf"
+};
