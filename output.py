@@ -7,6 +7,7 @@ import stat
 
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
+os.chdir(cwd)
 
 @app.route('/', methods=['POST'])
 def home_POST():

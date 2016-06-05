@@ -442,6 +442,7 @@ $('#refresh').click(function(){
 	function(data,status){
 		if(data != ''){
 			$('#tab4 .container').html('');
+			$('#terminator .input-text:gt(0)').remove();
 			$('#terminator .input-text').html('<input></input>');
 		}
 	});

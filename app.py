@@ -13,7 +13,7 @@ import time
 app = Flask(__name__)
 cwd = os.path.split(os.path.realpath(__file__))[0] + '/'
 env = Environment(loader = FileSystemLoader(cwd+'templates'))
-#os.chdir(cwd)
+os.chdir(cwd)
 
 @app.route('/', methods=['GET'])
 def home():
